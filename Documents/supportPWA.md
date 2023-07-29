@@ -11,6 +11,31 @@
 - 브라우저에 로드된 자바스크립트로 서버를 여는 기술이다.
 - 오프라인에서도 브라우저만 있다면 localhost와 같은 로컬 서버를 브라우저에서 열어 주기 때문에 실제 서버에 접속하지 않고도 서버에 접속하는 것과 유사한 환경을 오프라인에서 만드는 기능을 제공한다.
 
+### 웹팩 설정
+
+webpack.config.js
+
+```js
+// 웹팩 설정에 사용할 라이브러리 추가
+const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+
+// 웹팩 설정 코드
+
+module.exports = () => {
+  if (isProduction) {
+    config.mode = "production";
+
+    config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());
+  } else {
+    config.mode = "development";
+  }
+  return config;
+};
+```
+
+- PWA 모드를 지원하기 위해서는 `WorkboxWebpackPlugin`라는 플러그인을 불어와서 `module.exports` 설정 안에 `config.plugins.push(new WorkboxWebpackPlugin.GenerateSW());`라는 코드를 추가 해 주어야 한다.
+- 위 코드를 추가하면 웹팩을 `npm run build` 명령어로 빌드할 때 `service-worker.js`란 파일이 추가되고 이 파일을 통해서 빌드된 HTML을 실행했을 때 서버스 워커가 실행이 된다.
+
 ### PWA를 동작하기 위해 추가하는 스크립트
 
 - PWA를 활성화하지 않았을 때의 HTML
@@ -63,6 +88,7 @@
   </html>
   ```
 
+- 빌드된 파일을 실행할 때 `service-worker.js`의 코드 실행으로 인해 서비스워커가 실행 되었다면 위의 스크립트가 실행될 때 서비스 워커가 실행되었을 때의 코드 동작을 정의할 수 있다.
 - PWA 기능을 활성화하지 않았다면 `serviceWorker`에 관한 스크립트를 삭제해 주어도 무방하다.
 
 ---
