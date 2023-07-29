@@ -15,7 +15,7 @@ npx webpack-cli init
 
 > ? Which of the following JS solutions do you want to use? ES6
 
-- none, ES6, typescript 중에서 무엇을 사용할지를 묻는다. 익스플로러의 종말을 맞은 시기에 ES6 이전의 자바스크립트를 사용할 필요는 없기 때문에 ES6를 선택하면 된다. 타입스크립트의 기본 설정을 하고 싶은 경우에는 타입스크립트를 선택하면 된다.
+- none, ES6, typescript 중에서 무엇을 사용할지를 묻는다. ES6 문법은 대부분의 브라우저에서 지원을 하고, ES6를 지원하지 않는 익스플로러 브라우저가 있지만 익스플로러가 종말을 맞은 시기에 ES6 이전의 자바스크립트를 사용할 필요는 없기 때문에 ES6를 선택하면 된다. 타입스크립트의 기본 설정을 하고 싶은 경우에는 타입스크립트를 선택하면 된다.
 
 > ? Do you want to use webpack-dev-server? Yes
 
@@ -40,3 +40,26 @@ npx webpack-cli init
 - 옵션으로는 none, CSS only, SASS, LESS, Stylus가 있다. none은 CSS 관련 세팅을 자동으로 하지 않는 것이고, CSS only는 CSS 파일만을 사용할 수 있도록 한다. SASS와 LESS, Stylus가는 CSS에 좀 더 편리한 문법을 입히는 기술인데, 보통은 SASS를 많이 사용한다.
 
 > ? Will you be using PostCSS in your project? No
+
+- PostCSS는 자바스크립트를 이용하여 css 문법을 커스터마이징하는 기능을 제공한다.
+- PostCSS를 설치하고 이 위에 동작하는 자바스크립트 플러그인을 사용하면 정의한 CSS 문법이 다른 결과로 변환되어 나온다.
+- 예를 들어 어떤 브라우저에서 A라는 CSS 문법이 적용되지 않고 B라는 문법을 써야 적용되는 문제가 있다면 PostCSS를 사용해 A라는 문법만 사용하고 A문법을 사용했을 때 B문법도 추가해 주는 기능을 정의한다면 B 문법을 따로 쓰지 않고서도 A 문법만으로 해당 브라우저에서만 다르게 동작하는 처리를 할 수 있다.
+- 브라우저에서는 저마다 태그에 대해 기본 스타일을 제공하고 있는데 기본 태그를 사용할 때 크롬의 디자인과 사파리의 디자인이 다르게 적용될 수 있다. 이런 경우 자동으로 브라우저가 제공하는 기본 스타일을 자동으로 무시하고 통일된 스타일을 적용할 수 있게 만들어 주는 방식으로 활용할 수 있을 것이다.
+- 보통 CSS 문법은 커스터마이징하지 않고 있는 그대로를 사용하거나 CSS 전처리기인 SASS, LESS, Stylus가 제공하는 문법을 사용하기 때문에 PostCSS는 특별한 경우가 아니면 쓰지 않는다. 따라서 no로 답하면 된다.
+
+> ? Do you want to extract CSS for every file? Yes
+
+- MiniCssExtractPlugin과 관련된 옵션 설정을 한다. 이 옵션을 설정하지 않으면 css 파일도 자바스크립트 파일로 결과물이 산출된다.
+- CSS 파일과 자바스크립트 파일을 분리해서 번들링을 하고 싶은 경우에는 이 옵션을 yes로 선택하면 된다.
+- 자바스크립트 파일은 화면의 동적인 인벤트를 다루는 것에 반해, CSS 파일은 화면에 옷을 입혀주는 기능을 한다. CSS를 로딩할 때는 브라우저 화면에 표시되는 body 태그가 로드되기 이전인 head 태그에 추가한다. 그에 반해 자바스크립트의 경우 모든 body 태그가 로드된 이후에 동작하도록 만들어야 하는 경우가 많다. CSS는 화면에 표시되기 이전에 미리 화면에 입혀줄 옷을 준비하기 때문에 body가 표시되자마자 CSS가 입혀진다. 하지만 자바스크립트와 함께 만들어진 태그의 경우, 자바스크립트는 body 태그가 로드 된 이후에 동작하게 하기 위해서 body 태그의 맨 마지막에 script 태그가 위치하는 경우가 많다. 따라서 자바스크립트에 css가 있는 경우 초기에 CSS를 입히는 것이 아니라 자바스크립트에 의해서 body 태그가 로드된 이후에 CSS를 입히므로 CSS가 조금 더 늦게 입혀질 수 있다는 문제점이 있다.
+- 따라서 프로덕션에서는 위 옵션을 yes로 하는 편이 좋다.
+
+> ? Do you like to install prettier to format generated configuration? Yes
+
+- 파일의 저장 버튼을 누를 때 prettier라는 포메터에 의해서 `webpack.config.js` 설정 파일의 코드가 정렬되게 할 것인지를 묻는다.
+- 보통 prettier는 IDE에 설치해서 IDE에서 파일을 저장할 때마다 코드 포멧을 정렬해 주는 기능이지만 이렇게 사용하지 않고 위의 방식의 prettier 사용은 설정 파일 `webpack.config.js`의 정렬을 할 것인지 하지 않을 것인지를 묻는 것이다. 따라서 그냥 yes를 입력해 주면 된다.
+
+> > ? Pick a package manager: yarn
+
+- 위 옵션을 선택하면 npm, yarn, pnpm 중에 하나를 선택하라는 메시지가 나온다.
+- 아무거나 선택하면 되지만 속도가 빠른 yarn 또는 가장 많은 사용량을 보이는 npm을 선택하도록 하자. package manager를 다룰 때 마주하는 문제들을 어떻게든 해결할 자신이 있다면 속도가 빠른 pnpm을 사용해도 된다.
