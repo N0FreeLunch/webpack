@@ -63,3 +63,10 @@ npx webpack-cli init
 
 - 위 옵션을 선택하면 npm, yarn, pnpm 중에 하나를 선택하라는 메시지가 나온다.
 - 아무거나 선택하면 되지만 속도가 빠른 yarn 또는 가장 많은 사용량을 보이는 npm을 선택하도록 하자. package manager를 다룰 때 마주하는 문제들을 어떻게든 해결할 자신이 있다면 속도가 빠른 pnpm을 사용해도 된다.
+
+---
+
+## refer to the following
+
+- https://webpack.kr/configuration/
+- https://webpack.kr/guides/getting-started/#basic-setup
