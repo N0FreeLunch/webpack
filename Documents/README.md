@@ -4,4 +4,4 @@
 - [웹팩 설치하기](./install.md)
 - [.gitignore 설정하기](./createDotGitignore.md)
 - [PWA 사용하기](./supportPWA.md)
-- [엔트리 지정하기](./entryAndOutput.md)
+- [번들링할 대상 지정하기](./configureFileToBundling.md)
