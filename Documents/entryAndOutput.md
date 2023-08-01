@@ -6,7 +6,7 @@
 - 웹팩은 기본적으로 브라우징을 하는데 필요한 파일(JS, CSS, 옵션에 따라 HTML ...)을 하나로 묶는 기술이므로 번들링 도구라고 부른다.
 - 여러 번들링 도구 가운데 웹팩은 속도가 느린 편에 속한다. 하지만 가장 많은 기능을 가지고 있고, 가장 잘 알려진 기술이기 때문에 문제 해결이 상대적으로 쉽다는 장점이 있다. 속도가 빠른 번들링 도구들이 있지만 기능이 제한적이기 때문에 정해진 환경에서 주로 사용한다. 예를 들어 주로 vite('빗' 이라고 읽는다.)는 vueJS와 laravel에서 사용하며, turbopack은 레일즈 프레임워크에서 도입해서 사용하고 있다. 번들링 도구는 유명한 기술들을 대부분 지원하기 때문에 다른 번들링 도구로 대체할 수 있는 경우가 많다.
 
-### 웹팩 옵션 설정 위치
+## 웹팩 옵션 설정 위치
 
 webpack.config.js
 
@@ -20,9 +20,9 @@ const config = {
 };
 ```
 
-### entry
+## entry
 
-#### 하나의 파일만 번들링 하기
+### 하나의 파일만 번들링 하기
 
 - 웹팩으로 번들링할 대상 파일을 지정한다.
 
@@ -34,7 +34,7 @@ entry: "./src/index.js",
 - `yarn run build` 명령을 CLI에 입력하면, 프로젝트 루트 디렉토리에 `dist` 폴더가 생기고 `main.js`란 파일이 생성되는 것을 확인할 수 있다.
 - `dist.main.js` 내부를 보면, `src/index.js`와 동일한 `console.log("Hello World!");`란 코드가 들어 있는 것을 확인할 수 있다.
 
-#### 여러개의 파일을 번들링하기
+### 여러개의 파일을 번들링하기
 
 ```js
 console.log("CSS를 자바스크립트로 불러와 보자.");
@@ -68,6 +68,20 @@ entry: {
 
 ### 빌드 옵션 추가하기
 
+```js
+entry: {
+    index: {
+        import: [
+            "./src/index.js",
+            "./src/css.js"
+        ],
+        filename: 'pages/specific.js',
+    },
+}
+```
+
+- `filename` 속성을 정의하면 키로 이름을 지정하는 방식인 `index`보다 우선되어 적용이 되며, 키로 이름을 지정할 때는 파일명만 지정할 수 있었지만, `filename`을 사용할 경우 파일 경로를 세부적으로 설정할 수 있다. 이때 파일 경로는 `output`에 지정한 폴더가 기준이 되므로 `dist/pages/specific.js` 경로에 파일이 생성된다.
+
 ### entry 문법 살펴 보기
 
 ```js
@@ -76,4 +90,5 @@ string [string] object = { <key> string | [string] | object = { import string | 
 
 - `string` : 파일 경로를 문자열로 입력한다. 대상 경로의 파일은 웹팩에 의해 변환된다.
 - `[string]` : 배열에 경로 문자열을 나열하여 나열된 경로의 파일을 묶어 하나의 파일로 번들링한다.
-- `object = { <key> string | [string] | object = { import string | [string], dependOn string | [string], filename string, layer string }} ` : 오브젝트의 키(`<key>`)로는 `string` 문자열의 파일 경로, `[string]` 파일 경로를 문자열로 나열한 배열, `object = { import string | [string], dependOn string | [string], filename string, layer string }` 오브젝트를 할당가능하다. 내부 오브젝트 안의 `import` 키에는 `string` 문자열의 파일 경로, `[string]` 파일 경로를 문자열로 나열한 배열을 할당할 수 있으며, 내부 오브젝트 안의 `dependOn` 키에는 이 옵션을 가진 대상을 번들링 하기 전에 지정한 이름의 파일이 번들링되어 만들어지는지 확인하며 `string` 문자열로 의존하는 파일 경로 또는 `[string]` 의존하는 파일 경로 리스트를 배열으로 나열할 수 있다.
+- `object = { <key> string | [string] | object = { import string | [string], dependOn string | [string], filename string, layer string }} ` : 오브젝트의 키(`<key>`)로는 `string` 문자열의 파일 경로, `[string]` 파일 경로를 문자열로 나열한 배열, `object = { import string | [string], dependOn string | [string], filename string, layer string }` 오브젝트를 할당가능하다. 내부 오브젝트 안의 `import` 키에는 `string` 문자열의 파일 경로, `[string]` 파일 경로를 문자열로 나열한 배열을 할당할 수 있으며, 내부 오브젝트 안의 `dependOn` 키에는 이 옵션을 가진 대상을 번들링 하기 전에 지정한 이름의 파일이 번들링되어 만들어지는지 확인하며 `string` 문자열로 의존하는 파일 경로 또는 `[string]` 의존하는 파일 경로 리스트를 배열으로 나열할 수 있다. `filename`키에는 번들링되는 파일 이름을 지정하며 `entry` 오브젝트의 키로 파일이름이 지정되는 것을 무시하고 적용된다. 여러 파일을 하나로 합치는 번들링 파일을 만들 경로를 지정하기 때문에 하나의 경로만 있으면 되므로 배열 방식으로 나열하지 않고 `string`으로 생성할 경로를 문자열로 지정한다. `entry` 오브젝트의 키로 파일이름을 정할 때는 `output`에 정한 경로에 파일이 생성되는 반면 `filename`을 지정하면 좀 더 다양한 경로에 파일을 생성할 수 있다는 장점이 있다.
+- `(function() => string | [string] | object = { <key> string | [string] } | object = { import string | [string], dependOn string | [string], filename string }` : 함수의 리턴값으로 앞서 지정한 방식과 동일한 방식으로 `entry`를 설정할 수 있다.
