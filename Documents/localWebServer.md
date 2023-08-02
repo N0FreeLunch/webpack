@@ -76,3 +76,19 @@ const config = {
 
 - 위의 코드에서 자바스크립트 파일을 하나 빼 보자. (`"./src/css.js"` 파일을 주석처리 했다.)
 - CLI에서 서버를 종료하고(Ctrl + C) `npx webpack serve`으로 서버를 다시 실행하고 브라우저에서 확인을 하면 뺀 자바스크립트 파일의 코드가 빠진 것을 알 수 있다.
+- `yarn run watch` 또는 `yarn run build`로 빌드를 할 때도 `index.html`에 `script` 태그가 없어도 자동으로 추가되는 것을 알 수 있는데, 빌드를 하면 `dist/index.html`, `dist/index.js` 파일이 생성되는데 `dist/index.html`를 보면 아래와 같이 `<script defer src="index.js"></script>`라는 태그가 주입되어 만들어진 것을 확인할 수 있다.
+
+```js
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Webpack App</title>
+    <script defer src="index.js"></script></head>
+    <body>
+        <h1>Hello world!</h1>
+        <h2>Tip: Check your console</h2>
+    </body>
+
+</html>
+```
