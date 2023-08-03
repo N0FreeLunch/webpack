@@ -106,7 +106,8 @@ const config = {
 new HtmlWebpackPlugin({
     filename: "subpage.html",
     template: "src/pages/subpage.html",
-    chunks: ["sub"],
+    // chunks: ["sub"],
+    excludeChunks: ["index"],
 }),
 ```
 
