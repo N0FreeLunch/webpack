@@ -1,1 +1,1 @@
-console.log('run index.js javascript')
+import '../css/page.css';
