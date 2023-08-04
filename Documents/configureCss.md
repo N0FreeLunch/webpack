@@ -1,7 +1,7 @@
 ## CSS 세팅하기
 
 - `src` 폴더 안에 `css`라는 폴더를 만들자.
-- `src/css/page.css`라는 css 파일을 만들도록 하자.
+- `src/assets/css/page.css`라는 css 파일을 만들도록 하자.
 
 ```css
 body {
@@ -23,5 +23,41 @@ body {
 ### 자바스크립트 안에 css 불러오기
 
 - 우선은 `css-loader`라는 라이브러리가 웹팩에 세팅이 되어 있다고 가정한다.
-- `src/js/index.js` 파일 안에 `import '../css/page.css';`라는 코드를 넣고 dev 서버를 실행하면 배경색이 `lightgrey`으로 세팅이 된 페이지를 확인할 수 있다.
+- `src/assets/js/index.js` 파일 안에 `import '../css/page.css';`라는 코드를 넣고 dev 서버를 실행하면 배경색이 `lightgrey`으로 세팅이 된 페이지를 확인할 수 있다.
 - `import 'CSS파일의 경로.css'`의 코드를 자바스크립트에 로드를 하면, 웹 페이지가 로드될 때 웹팩으로 만들어진 자바스크립트 파일이 로드되면서 자바스크립트 내의 CSS를 로드하는 코드를 실행한다.
+
+### `css-loader`가 웹팩에 세팅되어 있지 않을 때
+
+webpack.config.js
+
+```js
+const config = {
+  // 다른 설정 옵션들
+  module: {
+        rules: [
+            {
+                test: /\.(js|jsx)$/i,
+                loader: 'babel-loader',
+            },
+            // {
+            //     test: /\.css$/i,
+            //     use: [stylesHandler, 'css-loader'],
+            // },
+            // {
+            //     test: /\.s[ac]ss$/i,
+            //     use: [stylesHandler, 'css-loader', 'sass-loader'],
+            // },
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+  // 다른 설정 옵션들
+};
+```
+
+- `webpack.config.js` 설정에서 `css-loader` 부분을 세팅하는 부분을 위와 같이 주석처리를 해 보자.
+- `npx webpack serve`로 웹페이지에 들어 갔을 때, 메인 페이지에서 CSS 코드를 실행할 수 없다며 에러가 발생하는 것을 확인할 수 있다.
+- 웹팩의 dev 서버나 번들링한 결과물을 실행할 때, 메인페이지는 `index.html`를 실행을 하고 `index.html`에는 `index.js`를 불러오는 script 태그를 주입하므로 메인페이지에 접근을 할 때 `index.js`가 실행된다. `index.js`는 `page.css`를 불러오는 코드를 불러오기 때문에 `page.css`의 css 코드가 실행이 된다.
+- 기본적으로 자바스크립트에서 `import` 키워드는 다른 자바스크립트 파일의 값을 가져오기 위해 사용하는 문법이다. 그런데 CSS 파일을 불러왔으므로 자바스크립트 에러가 발생한다. 그래서 메인 페이지에 접근을 했을 때 `You may need an appropriate loader to handle this file type, currently no loaders are configured to process this file.`라는 에러 메시지가 나온다.
+- `css-loader`는 CSS을 웹팩에서 다룰 수 있도록 여러 기능을 제공하고 그 중 한 기능으로 자바스크립트 파일에서 `import` 키워드로 CSS 파일을 불러오는 기능을 제공한다.
+- 에러의 확인을 했다면 `webpack.config.js`에서 `css-loader` 설정에 관련된 코드의 주석을 원상 복귀 하자.
