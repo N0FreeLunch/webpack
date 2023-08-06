@@ -14,10 +14,10 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 const config = {
     entry: {
         index: [
-            "./src/assets/js/index.js",
+            "./src/js/index.js",
         ],
         sub: [
-            "./src/assets/js/sub.js"
+            "./src/js/sub.js"
         ]
     },
     output: {
@@ -29,12 +29,12 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/assets/pages/index.html',
+            template: 'src/pages/index.html',
             chunks: ['index'],
         }),
         new HtmlWebpackPlugin({
             filename: 'subpage.html',
-            template: 'src/assets/pages/subpage.html',
+            template: 'src/pages/subpage.html',
             chunks: ['sub'],
         }),
 
