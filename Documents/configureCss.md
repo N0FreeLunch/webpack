@@ -1,7 +1,7 @@
 ## CSS 세팅하기
 
 - `src` 폴더 안에 `css`라는 폴더를 만들자.
-- `src/assets/css/page.css`라는 css 파일을 만들도록 하자.
+- `src/css/page.css`라는 css 파일을 만들도록 하자.
 
 ```css
 body {
@@ -23,7 +23,7 @@ body {
 ### 자바스크립트 안에 css 불러오기
 
 - 우선은 `css-loader`라는 라이브러리가 웹팩에 세팅이 되어 있다고 가정한다.
-- `src/assets/js/index.js` 파일 안에 `import '../css/page.css';`라는 코드를 넣고 dev 서버를 실행하면 배경색이 `lightgrey`으로 세팅이 된 페이지를 확인할 수 있다.
+- `src/js/index.js` 파일 안에 `import '../css/page.css';`라는 코드를 넣고 dev 서버를 실행하면 배경색이 `lightgrey`으로 세팅이 된 페이지를 확인할 수 있다.
 - `import 'CSS파일의 경로.css'`의 코드를 자바스크립트에 로드를 하면, 웹 페이지가 로드될 때 웹팩으로 만들어진 자바스크립트 파일이 로드되면서 자바스크립트 내의 CSS를 로드하는 코드를 실행한다.
 
 ### `css-loader`가 웹팩에 세팅되어 있지 않을 때

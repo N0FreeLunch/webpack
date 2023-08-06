@@ -12,7 +12,7 @@
 
 ### index.html 경로 조정
 
-- 프로젝트 루트 경로의 `index.html`　파일을 `src/assets/pages/index.html`으로 옮겨 보자. 이 때 `npx webpack serve`를 입력하면 `Module not found: Error: Can't resolve`라는 에러가 발생할 것이다.
+- 프로젝트 루트 경로의 `index.html`　파일을 `src/pages/index.html`으로 옮겨 보자. 이 때 `npx webpack serve`를 입력하면 `Module not found: Error: Can't resolve`라는 에러가 발생할 것이다.
 
 ```js
 const config = {
@@ -29,7 +29,7 @@ const config = {
 
 - `webpack.config.js` 파일에 `HtmlWebpackPlugin`을 사용한 위와 같은 코드가 있을 것이다. `template: "index.html"` 이외에 특별한 옵션을 지정하지 않았다. 이는 `webpack.config.js` 파일의 위치를 기준으로 `index.html` 파일을 메인 페이지로 한다는 의미를 가지고 있다. 특별한 옵션을 지정하지 않으면 메인 페이지 옵션으로 지정이 된다.
 - 메인 페이지의 옵션으로 지정이 된다는 말은 `npx webpack serve`으로 dev 서버를 실행했을 때 `http://localhost:8080` 주소 뒤에 추가 PATH를 아무것도 지정하지 않았을 때 기본적으로 실행되는 페이지로 지정된다는 의미이다.
-- `template: "index.html"`로 설정된 템플릿 경로를 `template: 'src/assets/pages/index.html'`으로 바꾸어 보자. 그러면 `src/assets/pages/index.html` 경로의 html이 메인 페이지에 표시된다.
+- `template: "index.html"`로 설정된 템플릿 경로를 `template: 'src/pages/index.html'`으로 바꾸어 보자. 그러면 `src/pages/index.html` 경로의 html이 메인 페이지에 표시된다.
 
 ### 페이지 추가하기
 
@@ -38,11 +38,11 @@ const config = {
   // 다른 설정 옵션들
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/assets/pages/index.html",
+      template: "src/pages/index.html",
     }),
     new HtmlWebpackPlugin({
       filename: "subpage.html",
-      template: "src/assets/pages/subpage.html",
+      template: "src/pages/subpage.html",
     }),
     // 다른 플러그인 설정들
   ],
@@ -51,21 +51,21 @@ const config = {
 ```
 
 - 새로운 페이지를 추가하는 방법은 `plugins`에 `new HtmlWebpackPlugin()`와 같이 `HtmlWebpackPlugin` 설정을 추가하는 것이다.
-- `HtmlWebpackPlugin` 설정을 할 때 `filename` 옵션은 dev 서버에서 실행을 할 때의 URL의 PATH에 해당한다. dev 서버에서 `template: "src/assets/pages/subpage.html"`으로 생성된 웹 페이지로 접근하려면 `filename` 옵션으로 지정한 PATH를 포함한 `http://localhost:8080/subpage.html`으로 접근할 수 있다.
+- `HtmlWebpackPlugin` 설정을 할 때 `filename` 옵션은 dev 서버에서 실행을 할 때의 URL의 PATH에 해당한다. dev 서버에서 `template: "src/pages/subpage.html"`으로 생성된 웹 페이지로 접근하려면 `filename` 옵션으로 지정한 PATH를 포함한 `http://localhost:8080/subpage.html`으로 접근할 수 있다.
 - `filename`이 없는 경우 메인 페이지로 설정이되며 추가 PATH 없이 `http://localhost:8080`으로 접근할 수 있다. `index.html`가 현제 메인 페이지로 설정되어 있다.
 
 ### 페이지에 자바스크립트 추가하기
 
 - HTML 파일에 자바스크립트를 로드하는 `script` 태그가 없어도 dev 서버를 실행할 때나, `yarn run watch` 또는 `yarn run build`를 사용하여 빌드된 HTML에는 웹팩에 지정된 자바스크립트 파일을 연결하는 `script` 태그가 자동적으로 생성이 된다.
 - 그런데 `webpack.config.js` 파일의 `entry`에 지정된 모든 자바스크립트 파일이 자동적으로 HTML에 연결이 되기 때문에 `HtmlWebpackPlugin`으로 함께 생성되는 HTML 모두에 똑같은 자바스크립트 파일이 로드된다. HTML 파일에 따라 사용하는 자바스크립트를 다르게 불러오도록 세팅하기 위해서는 모두 똑같은 자바스크립트 파일을 불러오는 문제를 해결할 필요가 있다.
-- 먼저 `src/assets/js`라는 폴더를 만들자. `index.js` 파일과 `sub.js`란 파일을 만들고 각각의 파일에 `console.log('run index.js javascript')`, `console.log('run sub.js javascript')`이란 코드를 적어 두자.
+- 먼저 `src/js`라는 폴더를 만들자. `index.js` 파일과 `sub.js`란 파일을 만들고 각각의 파일에 `console.log('run index.js javascript')`, `console.log('run sub.js javascript')`이란 코드를 적어 두자.
 - `webpack.config.js` 파일의 entry 설정에 위에서 생성한 자바스크립트 파일을 대상으로 지정하자.
 
 ```js
 const config = {
   entry: {
-    index: ["./src/assets/js/index.js"],
-    sub: ["./src/assets/js/sub.js"],
+    index: ["./src/js/index.js"],
+    sub: ["./src/js/sub.js"],
   },
   // 나머지 설정들
 };
@@ -82,12 +82,12 @@ const config = {
   // 다른 설정 옵션들
   plugins: [
     new HtmlWebpackPlugin({
-      template: "src/assets/pages/index.html",
+      template: "src/pages/index.html",
       chunks: ["index"],
     }),
     new HtmlWebpackPlugin({
       filename: "subpage.html",
-      template: "src/assets/pages/subpage.html",
+      template: "src/pages/subpage.html",
       chunks: ["sub"],
     }),
     // 다른 플러그인 설정들
@@ -98,14 +98,14 @@ const config = {
 
 - 각각의 웹 페이지에 서로 다른 자바스크립트 파일을 로드하기 위해서는 `chunks`라는 옵션을 사용한다.
 - 만약 `chunks`라는 옵션을 사용하지 않으면 해당 `html` 파일은 `entry`에 지정된 모든 자바스크립트 파일을 로드하게 된다. `chunks` 옵션을 지정하면 지정된 자바스크립트 파일만 로드하게 된다.
-- `chunks` 옵션은 보통 반드시 배열 값을 사용해 주어야 하며, 배열 안에는 `entry`에서 지정된 산출물의 이름을 문자열로 나열하여 적어 준다. 예를 들어 `./src/assets/js/index.js`란 자바스크립트 파일은 `entry`에서 `index`로 이름 붙여졌기 때문에 `chunks`의 배열에 `'index'`란 명칭으로 나열해 줘야 하며, `./src/assets/js/sub.js`는 entry`에서 `sub`로 이름 붙여졌기 때문에 `chunks`의 배열에 `'sub'`란 명칭으로 나열해 주어야 한다.
+- `chunks` 옵션은 보통 반드시 배열 값을 사용해 주어야 하며, 배열 안에는 `entry`에서 지정된 산출물의 이름을 문자열로 나열하여 적어 준다. 예를 들어 `./src/js/index.js`란 자바스크립트 파일은 `entry`에서 `index`로 이름 붙여졌기 때문에 `chunks`의 배열에 `'index'`란 명칭으로 나열해 줘야 하며, `./src/js/sub.js`는 entry`에서 `sub`로 이름 붙여졌기 때문에 `chunks`의 배열에 `'sub'`란 명칭으로 나열해 주어야 한다.
 - dev 서버에서 메인 페이지를 실행하면 `index.js`의 코드만 실행이 되고 `sub.js`의 코드가 실행되지 않는 것을 확인할 수 있다. (브라우저 콘솔창에 `run index.js javascript`만 나온다.) 또한 `/subpage.html` 페이지를 접속하면 `sub.js`의 코드만 실행이 되고 `index.js`의 코드는 실행되지 않는 것을 확인할 수 있다. (브라우저 콘솔창에 `run sub.js javascript`만 나온다.)
 - 만약 `entry`에 지정된 모든 자바스크립트 파일을 로드하되 지정한 몇몇 자바스크립트 파일만을 제외하고 싶다면 `excludeChunks` 옵션을 사용하면 된다.
 
 ```js
 new HtmlWebpackPlugin({
     filename: "subpage.html",
-    template: "src/assets/pages/subpage.html",
+    template: "src/pages/subpage.html",
     // chunks: ["sub"],
     excludeChunks: ["index"],
 }),
