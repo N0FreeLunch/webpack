@@ -8,3 +8,4 @@
 - [로컬 웹 서버 실행해 보기](./localWebServer.md)
 - [여러 페이지 설정하기](./multiPage.md)
 - [CSS 설정하기](./configureCss.md)
+- [CSS 파일 분리하기](./extractCssFile.md)
