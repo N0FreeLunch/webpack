@@ -54,3 +54,53 @@
 - `webpack.config.js`에서 `HtmlWebpackPlugin`을 이용하여 `html` 파일을 번들링 대상에 포함하였다. 이때 `filename`과 `template`라는 옵션을 설정하는데 `filename`은 dev 서버를 열거나 빌드를 했을 때의 URL 경로를 설정하는 부분이고, `template`는 개발하는 `html` 파일의 파일 경로이다. 개발하는 `html`의 파일 경로와 웹 서버 또는 빌드 했을 때의 URL 경로가 다른 것이다.
 - 실제 프로덕션 서버에 반영할 때는 `yarn run build`로 빌드된 파일이 위치하는 `dist` 폴더를 그대로 공개 폴더로 하거나 복사하여 공개폴더로 지정한다. 이때는 빌드된 파일 및 폴더는 개발하는 파일 및 폴더가 아니라 웹팩에서 설정한 경로를 갖게 된다. `html` 파일이라면 `HtmlWebpackPlugin`의 `filename`에 설정한 경로가 된다.
 - 따라서 파일 경로를 생각해서 개발하면 안 되고, 빌드된 결과물과 최대한 비슷한 환경을 갖는 로컬 서버에서의 경로를 기준으로 개발해야 한다.
+
+### 빌드 결과물에 assets 복제의 필요성
+
+- 웹팩에서는 개발하는 파일의 파일 경로와 달리 웹팩의 설정에 따라 웹 서버의 경로가 개발 환경의 파일 경로와는 다를 수 있다.
+- 보통 `src` 폴더는 개발하는 파일이 위치하는 곳이며, `dist`는 빌드한 파일이 위치하는 곳이다. `src` 폴더의 하위 폴더는 파일 경로의 PATH 세그먼트 (슬레시(/)와 슬레시(/) 사이의 PATH 조각 이름)가 되지만, `dist` 폴더의 하위 폴더는 파일 경로뿐만 아니라 웹 서버 경로의 PATH 세그먼트가 된다.
+- 예를 들어 `src/pages/index.html`의 파일 경로는 빌드 후 (설정에 따라 다르겠지만) `dist/index.html`의 위치에 빌드하게 된다. 이는 `HtmlWebpackPlugin`에서 `src/pages/index.html` 파일의 웹 경로를 `/` 최상단으로 설정했기 때문에 (`filename` 옵션의 설정을 하지 않았을 때 디폴트로 `/` 위치가 된다.) 공개 폴더인 `dist`를 웹 주소로 접근을 할 때 `dist` 폴더 하단에 `index.html`이 위치해야 `http://localhost:8080/`으로 접근할 수 있기 때문이다. 만약 `dist/pages/index.html`으로 빌드 되었다면 `http://localhost:8080/pages` 또는 `http://localhost:8080/pages/index.html`으로 접근을 해야하게 되므로 `HtmlWebpackPlugin`의 웹 경로를 지정하는 `filename`를 무시하게 된다.
+- `yarn run watch` 또는 `yarn run build` 명령어를 실행하면, `dist` 폴더에 빌드된 결과물이 생성된다. 파일 경로가 `dist/index.html`이면 웹 주소는 `http://localhost:8080/` 또는 `http://localhost:8080/index.html`이며, 파일 경로가 `dist/assets/img/icon-square-big.svg`이면 웹 주소는 `http://localhost:8080/assets/img/icon-square-big.svg`가 된다.
+- `src/assets/img/icon-square-big.svg`에 위치시킨 이미지를 웹 서버에서 접근하기 위해서는 `dist/assets/img/icon-square-big.svg`에 위치해야 `http://localhost:8080/assets/img/icon-square-big.svg`으로 접근을 할 수 있다.
+- css나 js에서 사용되는 이미지 파일은 웹팩으로 빌드 되면서 자동으로 `dist` 폴더에 이미지가 추가된다. 하지만, html 내에서 호출하는 이미지나 폰트와 같은 파일은 자동으로 빌드되어 `dist` 폴더에 추가되지 않는다. 따라서 웹팩으로 빌드할 때 `src/assets`의 폴더는 `dist/assets` 폴더로 복제 되어야 한다.
+- 특별한 설정을 하지 않는 한 웹팩은 assets 폴더를 빌드된 결과물 쪽에 복제하지 않으므로 빌드시 복제가 되도록 설정 해 주어야 한다.
+
+### 빌드 결과물에 assets 폴더 포함시키기
+
+- 빌드 결과물에 `src/assets`의 assets 폴더를 복제하기 위해서는 [copy-webpack-plugin](https://github.com/webpack-contrib/copy-webpack-plugin)라는 플러그인을 설치해야한다.
+- 먼저 웹팩 플러그인 라이브러리를 추가 해 주어야 한다.
+
+```
+yarn add -D copy-webpack-plugin
+```
+
+webpack.config.js
+
+```js
+// 다른 라이브러리를 불러오는 코드
+const CopyPlugin = require("copy-webpack-plugin");
+// 다른 설정들
+const config = {
+  // 다른 설정들
+  plugins: [
+    // 다른 플러그인들,
+
+    new CopyPlugin({
+      patterns: [{ from: "src/assets", to: "assets" }],
+    }),
+  ],
+  // 다른 설정들
+};
+// 나머지 웹팩 코드
+```
+
+- 위와 같이 라이브러리를 불러와서 `CopyPlugin`이란 플러그인을 추가한다.
+- 이때, `patterns` 옵션의 `from`은 복제할 대상 폴더, `to`는 빌드 폴더(여기서는 `dist`) 내의 폴더명을 입력한다.
+- `{ from: "src/assets", to: "assets" }`의 의미는 `src/assets` 경로의 폴더를 `dist/assets` 폴더로 복제하겠다는 설정이다.
+- `yarn run watch` 또는 `yarn run build` 명령어를 실행하면 `dist` 폴더 하단에 `src/assets` 폴더의 내용물과 동일한 `assets` 폴더가 생성되는 것을 확인할 수 있다.
+
+### html에서 이미지 파일 불러오기
+
+- `src/pages/index.html` 파일에 `<img src="/assets/img/icon-square-big.svg" />`라는 코드를 body 태그 안에 추가해 보자.
+- 로컬 서버 또는 빌드한 결과를 확인하면 `copy-webpack-plugin`에 의해서 `dist` 폴더 내에 assets 파일이 복제되었기 때문에 정상적으로 이미지가 로드되는 것을 확인할 수 있다.
+
