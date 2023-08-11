@@ -45,8 +45,9 @@
 
 #### 웹 서버에서의 상대 경로
 
-- `http://localhost:8080`으로 접속을 하면 `index.html`으로 접근을 한다. 이는 `index.html` 파일이 공개 폴더에 존재한다는 의미와 동일하다. 그러면 `index.html`에서 이미지 파일로 접근하기 위해서는 `index.html`을 표시하는 주소인 `http://localhost:8080`을 기준으로 `./assets/img/icon-square-big.svg`가 상대 경로 기준의 주소가 된다.
-- 예를 들어 `http://localhost:8080/test/index.html`이라고 해 보자. 이 때 이미지의 상대 주소는 실행된 경로가 `test` 폴더이므로 `../`으로 `test`` 폴더 상단의 공개 폴더로 가서 경로를 적어 주어야 한다. 따라서 위 주소를 기준으로 보았을 때는 `../assets/img/icon-square-big.svg`가 상대 경로가 된다.
+- `http://localhost:8080`으로 접속을 하면 `index.html`으로 접근을 한다. 이는 `index.html` 파일이 공개 폴더에 존재한다는 의미와 포함한다. 그러면 `index.html`에서 이미지 파일로 접근하기 위해서는 `index.html`을 표시하는 주소인 `http://localhost:8080`을 기준으로 `./assets/img/icon-square-big.svg`가 상대 경로 기준의 주소가 된다.
+- 브라우저는 실행되고 있는 실제 html의 위치가 보다는 웹 브라우저의 표시된 주소를 기준으로 상대 경로를 찾는다. `http://localhost:8080` 경로에서 실행된 `index.html`에서 `./assets/img/icon-square-big.svg` 위치를 가리키고 있다면 `http://localhost:8080` 주소를 기준으로 상대 경로를 설정하므로 `http://localhost:8080/assets/img/icon-square-big.svg`의 대상을 불러 온다.
+- 예를 들어 `http://localhost:8080/test/index.html`이라고 해 보자. 이 때 이미지의 상대 주소는 실행된 경로가 `test` 폴더이므로 `../`으로 `test` 폴더 상단의 공개 폴더로 가서 경로를 적어 주어야 한다. 따라서 위 주소를 기준으로 보았을 때는 `../assets/img/icon-square-big.svg`가 상대 경로가 된다.
 
 #### 웹팩에서의 경로
 
