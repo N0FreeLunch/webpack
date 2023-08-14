@@ -11,8 +11,17 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 const stylesHandler = MiniCssExtractPlugin.loader;
 
-const headerTag = `<header><div id="header">header</div></header>`;
-const footerTag = `<footer><div id="footer">footer</div></footer>`;
+const headerTag = `
+    <header>
+        <div id="header">header</div>
+    </header>
+`;
+
+const footerTag = `
+    <footer>
+        <div id="footer">footer</div>
+    </footer>
+`;
 
 
 const config = {
