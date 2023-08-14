@@ -11,3 +11,4 @@
 - [CSS 파일 분리하기](./extractCssFile.md)
 - [폴더 및 파일 구조](./folderFileStructure.md)
 - [이미지 파일 불러오기](./dealingAssetFiles.md)
+- [공통 템플릿 만들기](./commonTemplate.md)
