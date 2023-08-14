@@ -11,6 +11,8 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 const stylesHandler = MiniCssExtractPlugin.loader;
 
+const headerTag = `<header><div id="header">header</div></header>`;
+const footerTag = `<footer><div id="footer">footer</div></footer>`;
 
 
 const config = {
@@ -33,11 +35,15 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'src/pages/index.html',
             chunks: ['index'],
+            headerTag: headerTag,
+            footerTag: footerTag,
         }),
         new HtmlWebpackPlugin({
             filename: 'subpage.html',
             template: 'src/pages/subpage.html',
             chunks: ['sub'],
+            headerTag: headerTag,
+            footerTag: footerTag,
         }),
 
         new MiniCssExtractPlugin(),
