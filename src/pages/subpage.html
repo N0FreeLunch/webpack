@@ -4,8 +4,8 @@
     <title>subpage</title>
 </head>
 <body>
-    <%= htmlWebpackPlugin.options.headerTag %>
+    <%= require('../fragments/headerTag.js').write() %>
     <h2>subpage.html<h2>
-    <%= htmlWebpackPlugin.options.footerTag %>
+    <%= require('../fragments/footerTag.js').write() %>
 </body>
 </html>
