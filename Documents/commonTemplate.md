@@ -276,11 +276,46 @@ src/pages/index.html
 
 - `require` 함수의 인자로 받는 경로 앞에 `html-loader!`를 넣어 주고 `require` 함수의 실행 결과에 `.default`를 붙여주도록 한다. `.default`를 붙여주지 않는다면, `[object Module]`이란 표시만 나오므로 주의하자.
 - 로컬 서버를 켜면 `src/fragments/headerTag.html` 파일에 정의한 `html-loader로 불러온 header`를 표시하는 html 태그가 로딩되는 것을 확인할 수 있다.
+- html 코드 조각을 불러오는 방법으로 바꾸었다면 기존의 js 파일로 불러오는 코드를 삭제해 주자. ()`<%= require('../fragments/headerTag.js').write() %>` 코드를 삭제)
 
 ### 자바스크립트를 불러오는 것과 html을 불러오는 것의 차이점
 
 - 자바스크립트를 불러오는 것은 자바스크립트로 통신을 하거나 새롭게 변동된 상황에 따라 변동되는 값들을 새롭게 적용해서 테그를 만들어 낼 수 있다는 장점이 있는 반면, html을 그대로 불러오는 방식은 고정된 html 파일만 불러온다는 단점이 있다.
 - html 파일을 불러오는 방식을 사용하면 IDE(비쥬얼 스튜디오와 같은 에티터)에서 구문에 따라 색을 입혀주는 방식과 자동완성되는 방식의 코드를 사용할 수 있다는 장점이 있다.
+
+### html 코드 조각 내에서의 외부 파일 경로
+
+src/fragments/headerTag.html
+
+```html
+<header>
+  <div id="header">
+    <img
+      src="../assets/img/icon-square-big.svg"
+      style="width:2em; height: 2em"
+    />
+    html-loader로 불러온 header
+  </div>
+</header>
+```
+
+- 위와 같이 이미지 파일을 불러오는 코드를 만들어 주자.
+
+src/pages/index.html
+
+```html
+<!-- 코드 생략 -->
+<%= require('html-loader!../fragments/headerTag.html').default %>
+<h1>Hello world!</h1>
+<h2>Tip: Check your console</h2>
+<img src="assets/img/icon-square-big.svg" />
+<%= require('../fragments/footerTag.js').write() %>
+<!-- 코드 생략 -->
+```
+
+- `src/pages/index.html`의 코드는 body 태그 내의 코드이다.
+- `<img src="assets/img/icon-square-big.svg" />` 부분의 코드를 보면 절대 경로로 이미지 파일을 불러왔다. 하지만 `src/fragments/headerTag.html`의 이미지 파일의 경로는 `../assets/img/icon-square-big.svg`으로 상대 주소이다. html-loader로 불러온 html 태그 조각의 외부 파일 경로를 절대주소로 바꾸면 에러가 발생한다.
+- 에러가 발생하는 이유를 보면, `HtmlWebpackPlugin`의 html 템플릿은 빌드된 폴더에서의 경로로 접근을 하기 때문에 `assets/img/icon-square-big.svg`으로 경로를 쓰면 `dist/assets/img/icon-square-big.svg`의 주소로 접근한다. 하지만 html-loader로 불러온 html 태그 조각은 html 태그 조각이 위치한 로컬 파일 경로를 기준으로 외부 파일 경로를 연결한다. 따라서 html-loader로 불러온 html 태그 조각에서의 이미지 경로는 `../assets/img/icon-square-big.svg`으로 설정된다.
 
 ---
 
