@@ -227,10 +227,66 @@ const config = {
 - 다른 템플릿 엔진 (pug, ejs, underscore, handlebars, html-loader)를 사용할 수 있는 기능을 지원한다.
 - 다른 템플릿 엔진을 사용하는 경우 기존 웹팩 설정과 충돌하는 현상이 생길 수 있다. `HtmlWebpackPlugin`은 기본적으로 html 태그에서 사용되는 외부 링크 주소는 빌드된 폴더에서의 PATH를 기준으로 작성되어야 하지만 `html-loader`를 사용하는 경우 템플릿 파일의 경로를 기준의 PATH로 외부 링크 주소가 작성되어야 하므로 템플릿 엔진을 추가하는 순간 상당히 많은 코드의 변경을 요구하는 경우가 생긴다. 따라서 초기 설정부터 `html-loader`를 세팅하고 사용하면 모를까 그렇지 않고 점진적인 추가를 하는 경우에는 외부 템플릿 엔진을 사용하는 것이 좋지 않은 경우가 있다.
 
+### HTML을 템플릿으로 사용하기
+
+- `HtmlWebpackPlugin`에서 지정한 템플릿 html에서는 기본적으로 `<%=`와 `%>` 코드 사이에 자바스크립트를 넣을 수 있도록 만들었다.
+- `<%= require('../fragments/headerTag.js').write() %>`와 같은 방식으로 자바스크립트로 HTML 태그를 문자열로 만든 값을 가져와서 템플릿 안에 넣어 주었다.
+- 이번에는 `<%= require('../fragments/headerTag.html') %>`과 같은 방식으로 템플릿을 로드하는 방법을 알아 보자.
+- 이를 위해서는 `html-loader` 라이브러리를 설치해야 한다.
+
+```
+yarn add -D html-loader
+```
+
+- [`HtmlWebpackPlugin` 라이브러리](https://github.com/webpack-contrib/html-loader)의 설명을 보면 `webpack.config.js`에서 다음과 같은 로더 설정을 해야 사용할 수 있는 것 처럼 되어 있다. 하지만 이 방식을 사용하면 `HtmlWebpackPlugin` 플러그인에서 지정한 템플릿 html의 경로를 모두 바꿔 주어야 하는 문제점이 있다.
+
+```js
+module: {
+    rules: [
+      {
+        test: /\.html$/i,
+        loader: "html-loader",
+        options: {
+          // Disables attributes processing
+          sources: false,
+        },
+      },
+    ],
+  },
+```
+
+- `HtmlWebpackPlugin`에서는 *위 설정을 사용하지 않는 방식(Don't apply the above method)*으로 html-loader를 사용하는 방식이 있다. `HtmlWebpackPlugin`에서 지정한 템플릿 html에서 `<%=`와 `%>` 사이에서 로드하는 html 파일에만 html-loader를 사용해서 불러오는 방식이다.
+- 먼저 `src/fragments` 폴더에 `headerTag.html`이란 파일을 만들고 자바스크립트가 아닌 HTML 태그의 일부분을 적어 준다.
+
+src/fragments/headerTag.html
+
+```
+<header>
+    <div id="header">html-loader로 불러온 header</div>
+</header>
+```
+
+- `HtmlWebpackPlugin`에서 지정한 템플릿 html의 `<%=`와 `%>`에서 다음 코드를 통해서 html 파일을 불러 올 수 있다.
+
+src/pages/index.html
+
+```js
+<%= require('html-loader!../fragments/headerTag.html').default %>
+```
+
+- `require` 함수의 인자로 받는 경로 앞에 `html-loader!`를 넣어 주고 `require` 함수의 실행 결과에 `.default`를 붙여주도록 한다. `.default`를 붙여주지 않는다면, `[object Module]`이란 표시만 나오므로 주의하자.
+- 로컬 서버를 켜면 `src/fragments/headerTag.html` 파일에 정의한 `html-loader로 불러온 header`를 표시하는 html 태그가 로딩되는 것을 확인할 수 있다.
+
+### 자바스크립트를 불러오는 것과 html을 불러오는 것의 차이점
+
+- 자바스크립트를 불러오는 것은 자바스크립트로 통신을 하거나 새롭게 변동된 상황에 따라 변동되는 값들을 새롭게 적용해서 테그를 만들어 낼 수 있다는 장점이 있는 반면, html을 그대로 불러오는 방식은 고정된 html 파일만 불러온다는 단점이 있다.
+- html 파일을 불러오는 방식을 사용하면 IDE(비쥬얼 스튜디오와 같은 에티터)에서 구문에 따라 색을 입혀주는 방식과 자동완성되는 방식의 코드를 사용할 수 있다는 장점이 있다.
+
 ---
 
 ## refer to the following
 
 - https://github.com/jantimon/html-webpack-plugin/blob/main/docs/template-option.md
-- https://github.com/webpack-contrib/html-loader
 - https://github.com/jantimon/html-webpack-plugin
+- https://github.com/jantimon/html-webpack-plugin/tree/main/examples/custom-template
+- https://github.com/webpack-contrib/html-loader
