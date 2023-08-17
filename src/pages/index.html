@@ -5,11 +5,10 @@
         <title>Webpack App</title>
     </head>
     <body>
-        <%= require('../fragments/headerTag.js').write() %>
         <%= require('html-loader!../fragments/headerTag.html').default %>
         <h1>Hello world!</h1>
         <h2>Tip: Check your console</h2>
-        <img src="../assets/img/icon-square-big.svg" />
+        <img src="assets/img/icon-square-big.svg" />
         <%= require('../fragments/footerTag.js').write() %>
     </body>
     
