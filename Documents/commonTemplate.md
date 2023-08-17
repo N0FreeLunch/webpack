@@ -152,7 +152,7 @@ export { tag };
 src/pages/index.html
 
 ```html
-<!-- 다른 태그들 -->
+<!-- other html code -->
 <body>
   <%= require('../fragments/headerTag.js').write() %>
   <h1>Hello world!</h1>
@@ -160,19 +160,19 @@ src/pages/index.html
   <img src="./assets/img/icon-square-big.svg" />
   <%= require('../fragments/footerTag.js').write() %>
 </body>
-<!-- 다른 태그들 -->
+<!-- other html code -->
 ```
 
 src/pages/subpage.html
 
 ```html
-<!-- 다른 태그들 -->
+<!-- other html code -->
 <body>
   <%= require('../fragments/headerTag.js').write() %>
   <h2>subpage.html</h2>
   <%= require('../fragments/footerTag.js').write() %>
 </body>
-<!-- 다른 태그들 -->
+<!-- other html code -->
 ```
 
 ### 웹팩 설정 다시하기
@@ -184,31 +184,31 @@ const headerTag = `
     <header>
         <div id="header">header</div>
     </header>
-`; // 삭제
+`; // delete
 
 const footerTag = `
     <footer>
         <div id="footer">footer</div>
     </footer>
-`; // 삭제
+`; // delete
 
 const config = {
-  // 설정들...
+  // other config code...
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/pages/index.html",
       chunks: ["index"],
-      headerTag: headerTag, // 삭제
-      footerTag: footerTag, // 삭제
+      headerTag: headerTag, // delete
+      footerTag: footerTag, // delete
     }),
     new HtmlWebpackPlugin({
       filename: "subpage.html",
       template: "src/pages/subpage.html",
       chunks: ["sub"],
-      headerTag: headerTag, // 삭제
-      footerTag: footerTag, // 삭제
+      headerTag: headerTag, // delete
+      footerTag: footerTag, // delete
     }),
-    // 다른 plugin 설정들...
+    // other plugin code...
   ],
 };
 ```
@@ -307,13 +307,13 @@ src/fragments/headerTag.html
 src/pages/index.html
 
 ```html
-<!-- 코드 생략 -->
+<!-- code ellipsis -->
 <%= require('html-loader!../fragments/headerTag.html').default %>
 <h1>Hello world!</h1>
 <h2>Tip: Check your console</h2>
 <img src="assets/img/icon-square-big.svg" />
 <%= require('../fragments/footerTag.js').write() %>
-<!-- 코드 생략 -->
+<!-- code ellipsis -->
 ```
 
 - `src/pages/index.html`의 코드는 body 태그 내의 코드이다.
