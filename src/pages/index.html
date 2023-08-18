@@ -6,10 +6,17 @@
     </head>
     <body>
         <%= require('html-loader!../fragments/headerTag.html').default %>
-        <h1>Hello world!</h1>
-        <h2>Tip: Check your console</h2>
+        <h2>index.html</h2>
+        <%= 
+            require('../fragments/transmitMsgTag.js')
+            .write({
+                redMsg: 'red index msg',
+                blueMsg: 'blue index msg',
+                greenMsg: 'green index msg'
+            }) 
+        %>
         <img src="assets/img/icon-square-big.svg" />
-        <%= require('../fragments/footerTag.js').write() %>
+        <%= require('html-loader!../fragments/footerTag.html').default %>
     </body>
     
 </html>

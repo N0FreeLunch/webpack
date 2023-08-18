@@ -4,8 +4,16 @@
     <title>subpage</title>
 </head>
 <body>
-    <%= require('../fragments/headerTag.js').write() %>
-    <h2>subpage.html<h2>
-    <%= require('../fragments/footerTag.js').write() %>
+    <%= require('html-loader!../fragments/headerTag.html').default %>
+    <h2>subpage.html</h2>
+        <%= 
+            require('../fragments/transmitMsgTag.js')
+            .write({
+                redMsg: 'red subpage msg',
+                blueMsg: 'blue subpage msg',
+                greenMsg: 'green subpage msg'
+            }) 
+        %>
+    <%= require('html-loader!../fragments/footerTag.html').default %>
 </body>
 </html>
