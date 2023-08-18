@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <title>subpage</title>
-</head>
-<body>
-    <%= require('html-loader!../fragments/headerTag.html').default %>
-    <h2>subpage.html</h2>
+    <head>
+        <title>subpage</title>
+    </head>
+    <body>
+        <%= require('html-loader!../fragments/headerTag.html').default %>
+        <h2>subpage.html</h2>
+        <!-- prettier-ignore -->
         <%= 
             require('../fragments/transmitMsgTag.js')
             .write({
@@ -14,6 +15,6 @@
                 greenMsg: 'green subpage msg'
             }) 
         %>
-    <%= require('html-loader!../fragments/footerTag.html').default %>
-</body>
+        <%= require('html-loader!../fragments/footerTag.html').default %>
+    </body>
 </html>

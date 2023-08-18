@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -7,6 +7,7 @@
     <body>
         <%= require('html-loader!../fragments/headerTag.html').default %>
         <h2>index.html</h2>
+        <!-- prettier-ignore -->
         <%= 
             require('../fragments/transmitMsgTag.js')
             .write({
@@ -18,5 +19,4 @@
         <img src="assets/img/icon-square-big.svg" />
         <%= require('html-loader!../fragments/footerTag.html').default %>
     </body>
-    
 </html>
