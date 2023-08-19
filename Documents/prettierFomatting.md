@@ -65,3 +65,15 @@ src/pages/index.html
 ```
 
 -   더 많은 옵션은 [다음](https://prettier.io/docs/en/ignore)을 참고하도록 하자.
+
+### .prettierignore 사용하기
+
+-   만약 ejs 문법이 포함된 html 파일을 prettier로 포매팅을 하지 않도록 배제하고 싶다면 프로젝트 루트 경로에 `.prettierignore` 파일을 만들어 주면 된다.
+
+.prettierignore
+
+```
+src/pages/*.html
+```
+
+-   위와 같이 설정하면 `src/pages` 폴더 안의 모든 html 파일에 prettier 포매팅이 적용되지 않는다.
