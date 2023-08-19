@@ -1,0 +1,67 @@
+## prettier를 사용한 코드 포메팅
+
+-   HTML, CSS, JS를 사용할 경우 문법에만 맞다면 코드 스타일을 자유롭게 사용할 수 있다. 그리고 초보자들의 코드는 들여쓰기 개행 위치 등이 잘못되어 있는 경우가 많다. 이런 문제점을 해결하기 위해서 코드의 문법에 맞는 코드라면 코드 스타일을 일관되고 잘 정리해 주는 기능을 사용할 수 있다. 이런 도구를 코드 포메팅 툴이라 부른다.
+-   prettier는 코드 포메팅 도구로 가장 많이 쓰는 툴이며, 비쥬얼 스튜디오 코드에서는 [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) 라는 확장 프로그램을 설치하여 사용할 수 있다.
+
+### prettier 실행해 보기
+
+-   키보드에서 `cmd/ctrl` + `shift` + `p` 키를 동시에 누르면 `>` 표시가 있는 창이 뜨면서 검색을 할 수 있다. '문서 서식 (Format Document)' 항목을 검색한 후 해당 항목을 클릭하면 코드 포메팅이 적용된다.
+-   문서를 저장할 때 자동으로 prettier를 적용하도록 할 수도 있지만, prettier 설정을 충분히 다룰 수 없다면 필요할 때만 prettier를 사용하는 것을 추천한다.
+
+### .prettierrc
+
+-   `.prettierrc`는 prettier의 옵션을 사용할 수 있다. [옵션 리스트 확인](https://prettier.io/docs/en/options)
+-   `.prettierrc` 파일은 프로젝트의 루트 경로에 위치한다. prettier를 실행할 때 `.prettierrc` 파일의 옵션을 읽고 옵션에 지정한 대로 코드 스타일을 변경해 준다.
+-   웹팩에서의 `.prettierrc`의 옵션 설정은 현재 프로젝트의 [`.prettierrc`](../.prettierrc) 파일을 참고 하도록 하자.
+
+### 코드 스타일의 차이
+
+-   웹팩을 활용한 프로젝트에서 주로 사용하는 파일 포멧은 html, css, js, md 파일을 주로 사용한다. 일반적으로는 html을 비롯한 많은 코드는 4칸의 들여쓰기를 하고, css와 js는 2칸의 들여쓰기를 한다.
+-   prettier를 기본 세팅하면 이러한 차이점을 무시하고 동일한 코드 스타일로 변경한다. 따라서 기본 설정이 아닌 옵션을 `.prettierrc`를 사용하여 커스텀 해 줄 필요가 있다.
+
+```json
+"overrides": [
+        {
+            "files": "*.js",
+            "options": {
+                "tabWidth": 2
+            }
+        },
+        {
+            "files": "*.css",
+            "options": {
+                "tabWidth": 2
+            }
+        },
+        {
+            "files": "*.md",
+            "options": {
+                "embeddedLanguageFormatting": "off"
+            }
+        }
+    ]
+```
+
+-   `.prettierrc` 파일에 위 옵션이 추가되어 있는데, 파일의 확장자 명에 따라서 prettier의 옵션을 다르게 적용하겠다는 의미이다.
+
+### ejs 포멧을 다룰 때 주의할 점
+
+-   웹팩의 html-webpack-plugin을 사용하면 템플릿 html에서 `<%=` `%>` 사이에 자바스크립트를 넣을 수 있는 문법을 지원한다.
+-   하지만 표준 html 문법이 아니기 때문에 prettier로 코드 스타일을 변경하면 `<%=` `%>`와 그 사이의 코드가 적절히 조정되지 않는 문제가 생긴다.
+-   따라서 `<%=` `%>` 사이의 코드가 여러 줄이 되는 경우에는 prettier의 포멧팅이 적용되지 않도록 해 주어야 한다. html에서는 `<!-- prettier-ignore -->` 라는 코드를 태그 바로 위에 적어 주면 `<!-- prettier-ignore -->`에 바로 이러진 태그는 prettier의 포메팅 대상에서 제외한다.
+
+src/pages/index.html
+
+```html
+    <!-- prettier-ignore -->
+    <%=
+        require('../fragments/transmitMsgTag.js')
+        .write({
+            redMsg: 'red index msg',
+            blueMsg: 'blue index msg',
+            greenMsg: 'green index msg'
+        })
+    %>
+```
+
+-   더 많은 옵션은 [다음](https://prettier.io/docs/en/ignore)을 참고하도록 하자.
