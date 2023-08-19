@@ -21,6 +21,12 @@
     "embeddedLanguageFormatting": "auto",
     "overrides": [
         {
+            "files": "*.html",
+            "options": {
+                "plugins": ["prettier-plugin-ejs"]
+            }
+        },
+        {
             "files": "*.js",
             "options": {
                 "tabWidth": 2
