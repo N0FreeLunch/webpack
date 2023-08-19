@@ -77,3 +77,35 @@ src/pages/*.html
 ```
 
 -   위와 같이 설정하면 `src/pages` 폴더 안의 모든 html 파일에 prettier 포매팅이 적용되지 않는다.
+
+### ejs 플러그인을 prettier에 적용하기
+
+-   html 파일에서 ejs 문법을 적을 때 마다 `<%=` `%>` 코드 위에 `<!-- prettier-ignore -->`를 적어주는 것이 불편할 수 있다. prettier에 ejs 포맷에 대한 문법을 적절히 포맷팅 해 주는 플러그인을 설치하여 이를 해결할 수 있다.
+-   아쉬운 점은 아직 유명하지 않은 라이브러리를 설치해야 한다는 점이다. [prettier-plugin-ejs](https://github.com/ecmel/prettier-plugin-ejs) 라이브러리를 사용하도록 하자.
+-   잘 알려진 라이브러리를 설치하는 것이 좋지 않은 이유는 내부에서 어떤 코드가 동작할지 위험성에 대한 보고가 검증이 이뤄지지 않았기 때문에 라이브러리의 내부 코드에 위험성이 있지 않은지를 직접 확인해야 한다. [prettier-plugin-ejs](https://github.com/ecmel/prettier-plugin-ejs) 라이브러리는 동작이 아주 단순해서 확인하기 쉽고 특별히 위험성 있는 동작을 하지 않는다는 것을 확인할 수 있다. 물론 잘 알려진 라이브러리가 아니라서 버그가 있을 가능성이 있지만 코드가 단순한 만큼 특별히 문제가 있을 것 같지는 않다.
+
+#### 플러그인 설치하기
+
+```sh
+yarn add --dev prettier-plugin-ejs
+```
+
+#### 플러그인 적용하기
+
+.prettierrc
+
+```json
+    // other configurations...
+    "overrides": [
+        {
+            "files": "*.html",
+            "options": {
+                "tabWidth": 4,
+                "plugins": ["prettier-plugin-ejs"]
+            }
+        },
+        // other configurations...
+    ]
+```
+
+-   html 파일에서 `<!-- prettier-ignore -->` 코드를 제거한 뒤 prettier를 적용해도 `<%=` `%>` 코드가 잘 정렬되어 있는 것을 확인할 수 있다.
