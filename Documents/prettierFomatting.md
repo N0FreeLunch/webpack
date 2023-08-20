@@ -109,3 +109,61 @@ yarn add --dev prettier-plugin-ejs
 ```
 
 -   html 파일에서 `<!-- prettier-ignore -->` 코드를 제거한 뒤 prettier를 적용해도 `<%=` `%>` 코드가 잘 정렬되어 있는 것을 확인할 수 있다.
+
+### `<%` `%>` 사이에는 html 태그를 적을 때
+
+-   html에서 prettier는 태그 형식의 포맷팅을 우선시한다. `src/pages/index.html` 파일 안에 `<% const tag = `<h2>index.html</h2>` %>`라는 코드를 적어 보자. prettier를 적용하면 태그를 들여쓰기 다음에 위치시키기 위해 prettier는 태그의 전후를 강제로 개행한다.
+
+```html
+    <% const tag = `
+    <h2>index.html</h2>
+    ` %>
+```
+
+-   그런데 이런 개행이 문제가 되는 경우가 생기는데, `<%` `%>` 사이에 태그를 나열한 코드를 연속으로 사용하는 경우이다.
+
+```html
+    <%= `<div>apply pretttier to tag string in &lt;%= %&gt;</div>` %>
+    <%= `<div>apply pretttier to tag string in &lt;%- %&gt;</div>` %>
+    <%_ `
+    <div>apply pretttier to tag string in &lt;%_ and %&gt;</div>
+    ` %>
+```
+
+-   위와 같이 태그를 적고 prettier를 적용하면 다음과 같이 포매팅이 된다.
+
+```
+    <%= `
+    <div>apply pretttier to tag string in &lt;%= and %&gt;</div>
+    ` %> <%= `
+    <div>apply pretttier to tag string in &lt;%- and %&gt;</div>
+    ` %> <%_ `
+    <div>apply pretttier to tag string in &lt;%_ and %&gt;</div>
+    ` %>
+```
+
+-   html 문서 내에서 prettier는 html 태그를 한 줄에 배치하려고 한다. 그래서 ``<%= ` ``와 `` ` %>``가 위 아래 행으로 밀리고, ``<%= ` ``와 `` ` %>``가 위 아래 행으로 밀려 버린다. 또 ``<%# ` `` 와 ``<%# ` ``가 위 아래 행으로 밀린다.
+-   특히 연속으로 태그를 적으면 닫는 ejs 태그와 여는 ejs가 한 줄에 위치하는 문제가 발생한다.
+-   따라서 `<%` `%>` 사이에 가능한 태그를 그냥 적는 것을 지양하고 외부 파일을 불러오는 방식으로 사용하거나 prettier의 적용될 때 닫는 ejs 태그와 여는 ejs를 구분하기 위해 빈 html 주석 문자를 적어주는 방법을 사용하도록 한다.
+
+```html
+    <%= `<div>apply pretttier to tag string in &lt;%= %&gt;</div>` %><!-- -->
+    <%= `<div>apply pretttier to tag string in &lt;%- %&gt;</div>` %><!-- -->
+    <%_ `<div>apply pretttier to tag string in &lt;%_ and %&gt;</div>` %><!-- -->
+```
+
+-   위 코드를 prettier를 적용하면 다음 코드가 된다.
+
+```
+    <%= `
+    <div>apply pretttier to tag string in &lt;%= %&gt;</div>
+    ` %><!-- -->
+    <%= `
+    <div>apply pretttier to tag string in &lt;%- %&gt;</div>
+    ` %><!-- -->
+    <%_ `
+    <div>apply pretttier to tag string in &lt;%_ and %&gt;</div>
+    ` %><!-- -->
+```
+
+-   `<%` `%>` 연속으로 태그가 위치할 때 prettier-plugin-ejs 라이브러리가 자동적으로 적절한 개행을 해 주면 좋지만 연속으로 태그가 위치할 때의 처리가 충분하지 않은 단점이 있어서 수동으로 코드를 적어 적절한 개행이 일어날 수 있도록 빈 주석을 추가해 주는 것이 좋아 보인다.
