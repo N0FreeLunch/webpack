@@ -6,7 +6,35 @@
     </head>
     <body>
         <%= require('html-loader!../fragments/headerTag.html').default %>
+
+        <% const tag = `
         <h2>index.html</h2>
+        ` %><!-- -->
+
+        <%= tag %>
+
+        <%- tag %>
+
+        <%= `
+        <div>apply pretttier to tag string in &lt;%= and %&gt;</div>
+        ` %><!-- -->
+        <%- `
+        <div>apply pretttier to tag string in &lt;%- and %&gt;</div>
+        ` %><!-- -->
+        <%_ `
+        <div>apply pretttier to tag string in &lt;%_ and %&gt;</div>
+        `%><!-- -->
+
+        <br />
+        <% if(true) {%>
+        <%= '<b>true</b>' %>
+        <% } else {%>
+        <%- '<b>false</b>' %>
+        <% } %>
+
+        <br />
+        <%= _.join(['Be', 'joyful', 'always'], [separator=' ']) %>
+
         <%= 
             require('../fragments/transmitMsgTag.js')
             .write({
