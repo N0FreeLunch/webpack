@@ -66,8 +66,10 @@
     - 이 명령어를 사용할 때 요구사항이 있는데 깃에 의해 추적되고 있는 파일은 커밋되지 않은 파일이 없이 모두 커밋 되어야 한다는 점이다. (이 과정을 진행할 때는 `git stash` 등의 명령어를 사용하여 `hanges not staged for commit:`에 해당하는 임시 저장하도록 하자. 아래의 작업 진행 후 다시 원래 브렌치로 돌아와서 `git stash apply` 명령을 실행하면 임시 저장된 대상이 복구되면서 `hanges not staged for commit:`에 변경 사항을 가진 파일들이 표시되게 된다.)
 
     ```sh
-    git switch --orphan gh-pages
+    git switch --orphan build
     ```
+
+    - `build`라는 브렌치를 만들어 준다. 이 브렌치는 웹 페이지로 실제로 배포하기 이전에 빌드된 결과물을 확인하기 위한 용도의 브렌치이다. 먼저 `build`라는 브렌치에 빌드된 결과물을 올리고 여러 사람 또는 담당자가 해당 코드와 그 실행 결과를 확인한 이후 최종적으로 배포해도 된다고 의견이 모아졌을 때 배포 브렌치륾 만들어준다.
 
 4. 빈 브렌치에 `docs` 폴더 넣기
 
@@ -82,7 +84,6 @@
     ```
 
 5. 원격 저장소로 푸시하기
-
     ```sh
-    git push origin gh-pages
+    git push origin build
     ```
