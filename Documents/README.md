@@ -14,3 +14,4 @@
 -   [공통 템플릿 만들기](./commonTemplate.md)
 -   [html 코드 조각 불러오기](./loadHtmlFragments.md)
 -   [prettier 사용하기](./prettierFomatting.md)
+-   [EJS 포맷](./ejsFormat.md)
