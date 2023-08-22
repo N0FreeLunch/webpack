@@ -6,6 +6,13 @@
     </head>
     <body>
         <%= require('html-loader!../fragments/headerTag.html').default %>
+        <%=
+            require('handlebars-loader!../fragments/colorInfo.hbs')({
+                colorName : 'red',
+                hexadecimal : '#FF0000',
+                rgb: '255,0,0'
+            })
+        %>
 
         <% const tag = `
         <h2>index.html</h2>
