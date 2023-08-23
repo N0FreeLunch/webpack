@@ -168,7 +168,7 @@ yarn add --dev prettier-plugin-ejs
 
 -   `<%` `%>` 연속으로 태그가 위치할 때 prettier-plugin-ejs 라이브러리가 자동적으로 적절한 개행을 해 주면 좋지만 연속으로 태그가 위치할 때의 처리가 충분하지 않은 단점이 있어서 수동으로 코드를 적어 적절한 개행이 일어날 수 있도록 빈 주석을 추가해 주는 것이 좋아 보인다.
 
-### handlebars prettier 플러그인 설치하기
+### handlebars 파일 코드 포매팅
 
 -   기본적으로 prettier는 handlebars 포맷을 완벽하게 지원하지 않는다. 따라서 [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)과는 별개로 [handlebars-formatter](https://marketplace.visualstudio.com/items?itemName=mfeckies.handlebars-formatter)라는 확장 프로그램을 추가로 사용하여 코드 포맷팅을 한다.
 -   확장 프로그램을 설치한 이후, `.hbs` 파일로 가서 `cmd/ctrl` + `shift` + `p` 키를 누른 후 `문서 서식 프로그램`(`Format Document...`)(`문서 서식`(`Format Document`)과는 다르다. `...`가 뒤에 추가 되었는지의 차이)을 선택한다. 그러면 `Prettier - Code formatter` 와 `handlebars-formatter`를 선택할 수 있는데 `handlebars-formatter`를 선택하여 사용하도록 한다. 한번 선택이 되면 기본적으로 `handlebars-formatter`를 사용하게 된다.
