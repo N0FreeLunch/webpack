@@ -208,3 +208,11 @@
     ```sh
     git push origin staging
     ```
+
+### 스테이징 브렌치의 변경사항을 gh-pages 브렌치에 전파하기
+
+-   실수를 방지하기 위해 CLI 명령어로 적용하지 않는다.
+-   깃 허브에서 Pull Request를 작성한다.
+-   브렌치의 변경사항 전파 관계는 `gh-pages` <- `staging`이다.
+-   `staging`에 올린 빌드 결과물에 대한 검증이 끝나면 작성된 Pull Request를 승인한다.
+-   그러면 `staging` 브렌치의 변경 사항이 `gh-pages` 브렌치로 전파된다.
