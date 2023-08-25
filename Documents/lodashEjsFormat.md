@@ -1,7 +1,8 @@
-## ejs format
+## lodash ejs format
 
 -   웹팩에서 html을 관리하기 위해서 html-webpack-plugin을 사용한다. html-webpack-plugin에서 html 템플릿을 사용할 때 `<%` `%>`에 자바스크립트 코드를 쓸 수 있는 EJS 템플릿 문법을 지원한다.
 -   하지만, html-webpack-plugin의 html 템플릿 파일에서 사용할 수 있는 ejs 문법은 ejs의 모든 문법을 지원하지 않는다.
+-   html-webpack-plugin은 기본적으로 lodash의 템플릿 엔진을 사용하고 있고, 이 템플릿에서 지원하는 ejs 템플릿을 lodash ejs 템플릿이라 부른다.
 
 > By default (if you don't specify any loader in any way) a fallback ejs loader kicks in. Please note that this loader does not support the full ejs syntax as it is based on lodash template. <sup>[link](https://github.com/jantimon/html-webpack-plugin/blob/main/docs/template-option.md#1-dont-set-any-loader)</sup>
 
@@ -52,7 +53,7 @@ require('../fragments/transmitMsgTag.js')
 
 ### EJS 문법 설명
 
--   ejs에서 공식적으로 지원하는 태그 문법은 `<%`, `<%_`, `<%=`, `<%-`, `<%#`, `<%%`, `%>`, `-%>`, `_%>`이다. 하지만 html-webpack-plugin에서 사용할 수 있는 EJS에서 사용할 수 있는 태그 문법은 `<%`, `<%_`, `<%=` 뿐이다.
+-   ejs에서 공식적으로 지원하는 태그 문법은 `<%`, `<%_`, `<%=`, `<%-`, `<%#`, `<%%`, `%>`, `-%>`, `_%>`이다. 하지만 html-webpack-plugin에서 사용할 수 있는 lodash ejs에서 사용할 수 있는 태그 문법은 `<%`, `<%_`, `<%=` 뿐이다.
 -   html-webpack-plugin는 [lodash template](https://lodash.com/docs/4.17.15#template)를 기반으로 만들어졌는데, 여기서 지원하는 ejs 태그 문법을 사용한 설명이 적혀 있다.
 
 src/pages/index.html
@@ -123,3 +124,4 @@ src/pages/index.html
 
 -   html-webpack-plugin의 템플릿으로 사용되는 html 파일에서 일부 ejs 문법을 사용할 수 있다. 이 ejs 문법은 [lodash template](https://lodash.com/docs/4.17.15#template)를 기반으로 만들어졌다. lodash template 기반 ejs는 로다시 라이브러리를 사용할 수 있는 기능을 제공한다.
 -   자바스크립트에서 변수는 `_`로도 사용할 수 있는데 `_` 변수에 로다시 라이브러리를 사용할 수 있는 오브젝트가 할당되어 있어서 `_.로다시함수`와 같은 방식으로 코드를 쓸 수 있다.
+-   위의 예시의 코드도 `_.join()` 로다시 라이브러리의 join 함수를 사용한 것이다.
