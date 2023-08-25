@@ -15,5 +15,5 @@
 -   [html 코드 조각 불러오기](./loadHtmlFragments.md)
 -   [handlebars 템플릿 사용하기](./handlebarsTemplate.md)
 -   [prettier 사용하기](./prettierFomatting.md)
--   [EJS 포맷](./ejsFormat.md)
+-   [lodash EJS 포맷](./lodashEjsFormat.md)
 -   [깃허브 페이지와 리포지토리](./githubPageRepository.md)
