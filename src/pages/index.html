@@ -7,7 +7,7 @@
     <body>
         <%= require('html-loader!../fragments/headerTag.html').default %>
         <%=
-            require('handlebars-loader!../fragments/colorInfo.hbs')({
+            require('!!handlebars-loader!../fragments/colorInfo.hbs')({
                 colorName : 'red',
                 hexadecimal : '#FF0000',
                 rgb: '255,0,0'
