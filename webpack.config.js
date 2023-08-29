@@ -34,7 +34,7 @@ const config = {
             chunks: ['index'],
         }),
         new HtmlWebpackPlugin({
-            filename: 'subpage.html',
+            filename: 'subpage/index.html',
             template: 'src/pages/subpage.html',
             chunks: ['sub'],
         }),
