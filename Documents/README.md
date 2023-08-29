@@ -13,6 +13,7 @@
 -   [이미지 파일 불러오기](./dealingAssetFiles.md)
 -   [공통 템플릿 만들기](./commonTemplate.md)
 -   [html 코드 조각 불러오기](./loadHtmlFragments.md)
+-   [템플릿 로더](./templateLoader.md)
 -   [handlebars 템플릿 사용하기](./handlebarsTemplate.md)
 -   [prettier 사용하기](./prettierFomatting.md)
 -   [lodash EJS 포맷](./lodashEjsFormat.md)
