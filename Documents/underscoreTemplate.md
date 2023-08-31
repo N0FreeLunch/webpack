@@ -42,7 +42,7 @@ src/pages/index.html
 
 ### 전역 설정
 
--   기본적으로 html-webpack-plugin을 사용할 때는 전역설정을 추천하지는 않는다. 왜냐하면 기본 lodash template과 충돌하는 문제가 발생할 수 있기 때문에 `require('!!underscore-template-loader!파일경로')()`와 같은 방식으로 사용하는 것을 추천한다.
+-   기본적으로 html-webpack-plugin을 사용할 때는 전역설정을 추천하지는 않는다. 왜냐하면 기본 lodash template을 무시하고 underscore template를 사용하는데, 기본 템플릿을 사용하지 않을 때 문제가 발생할 수 있기 때문에 기본 템플릿은 lodash template로 두고 기본 템플릿에서 `require('!!underscore-template-loader!파일경로')()`와 같은 방식으로 underscore template 로더를 사용해 템플릿 모듈을 불러오는 방식으로 사용하는 것을 추천한다.
 -   underscore 템플릿을 전역 설정하여 사용하는 경우에는 html-webpack-plugin에서 사용되는 lodash template와 충돌하는 문제가 있다. 따라서 `test` 옵션의 정규식에 파싱될 대상 파일명을 lodash template에서 사용할 파일 경로 규칙과 underscore template에서 사용할 파일 경로 규칙을 구분해서 적어 주는 것이 좋다.
 
 ```js
