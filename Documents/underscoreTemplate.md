@@ -57,3 +57,26 @@ src/pages/index.html
 
 -   `test: /\.html$/` 부분에서 lodash template에서 사용할 html 파일과 underscore template에서 사용할 html 파일을 구분하기 위해 `test: /\.un\.html$/`등의 형식으로 설정하여 underscore template는 `파일명.un.html`의 경우에만 적용하는 등의 방식을 사용하는 방식을 추천한다.
 -   `engine: 'lodash'` : 변수 언더바(\_)에 lodash 라이브러리를 바인딩한다.
+
+### 서브 모듈 만들기
+
+src/fragments/undercoreSubTag.html
+
+```html
+<div>
+    <%= 'undercore sub module tag' %>
+</div>
+```
+
+src/fragments/footerTag.html
+
+```html
+<footer>
+    <div id="footer" style="background-color: darkgreen; color: white">
+        <%= 'html-loader로 불러온 footer' %>
+        <%= require('!!underscore-template-loader!./undercoreSubTag.html')() %>
+    </div>
+</footer>
+```
+
+-   언더스코어 템플릿 html에서 `<%= require('!!underscore-template-loader!다른_underscore_template_경로.html')() %>`의 코드를 사용하여 외부의 underscore 템플릿을 로드하는 방식으로 서브 모듈을 만들어 사용할 수 있다.
