@@ -69,3 +69,26 @@
 
 -   `로더명?옵션!`의 형식으로 `로더명`과 `!` 사이에 `?옵션`을 넣을 수 있다.
 -   로더의 옵션은 `?key=value&foo=bar`와 같은 쿼리 파라메터 형식 또는 `? { "key": "value", "foo": "bar"}`과 같은 json 형식을 사용할 수 있다.
+
+### 템플릿 로더 사용시 주의할 점
+
+-   `로더명!경로`의 표현식에서 `'로더명!경로'`는 문자열으로 이뤄져야 한다. `` `로더명!${경로_변수}` `` 또는 `'로더명!' + 경로_변수`와 같은 방식으로는 사용 불가능하다.
+-   따라서 로더를 통해서 무언가를 불러올 때는 변수에 따라 변동되는 대상을 로드할 수 없으며 불러올 대상이 문자열로 하드코딩 되어 있어야 한다는 제약이 있다.
+-   이런 제약 때문에 다음과 같은 템플릿 구성이 불가능하다.
+
+```html
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Webpack App</title>
+    </head>
+    <body>
+        <%= require('!!underscore-template-loader!'+ htmlWebpackPlugin.options.bodyFilePath) %>
+    </body>
+</html>
+```
+
+-   예를 들어 `htmlWebpackPlugin.options.bodyFilePath`의 값이 `./body.html`이라고 해 보자.
+-   `'!!underscore-template-loader!'+ htmlWebpackPlugin.options.bodyFilePath` 이런식으로 쓰게 되면 `require` 함수는 `!!underscore-template-loader!`로더로 불러오는 `./body.html`이라는 방식으로 판단하지 않고 `!!underscore-template-loader!./body.html`라는 경로를 불러오는 방식으로 판단한다. 하지만 `!!underscore-template-loader!./body.html` 이런 경로는 존재하지 않기 때문에 모듈을 불러올 때 에러가 발생하게 된다.
+-   웹팩에서 어떤 대상 경로에 로더를 적용하여 불러오기 위해서는 변수 없는 문자열로 정의해 주어야 한다.
