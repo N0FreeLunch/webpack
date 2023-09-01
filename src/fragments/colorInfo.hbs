@@ -5,7 +5,10 @@
     <div>RGB 표기 : {{ rgb }}</div>
     <div style="display: flex">
         색상&nbsp;:&nbsp;
-        <div style="background-color: {{ hexadecimal }}; width: 2em; height: 2em;"></div>
+        <div
+            style="background-color: {{ hexadecimal }}; width: 2em; height: 2em;"
+        ></div>
     </div>
+    <!-- prettier-ignore -->
     {{> colorDetail link='{{colorName}}' message='Red has symbolized wealth andpower' }}
 </div>

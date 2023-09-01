@@ -43,6 +43,13 @@
             "options": {
                 "embeddedLanguageFormatting": "off"
             }
+        },
+        {
+            "files": "**/*.hbs",
+            "options": {
+                "printWidth": 80,
+                "parser": "html"
+            }
         }
     ]
 }
