@@ -56,13 +56,17 @@ const config = {
                 test: /\.(js|jsx)$/i,
                 loader: 'babel-loader',
             },
+            // {
+            //     test: /\.css$/i,
+            //     use: [stylesHandler, 'css-loader'],
+            // },
+            // {
+            //     test: /\.s[ac]ss$/i,
+            //     use: [stylesHandler, 'css-loader', 'sass-loader'],
+            // },
             {
-                test: /\.css$/i,
-                use: [stylesHandler, 'css-loader'],
-            },
-            {
-                test: /\.s[ac]ss$/i,
-                use: [stylesHandler, 'css-loader', 'sass-loader'],
+                test: /\.(c|sa|sc)ss$/i,
+                use: [stylesHandler, { loader: 'css-loader' }, { loader: 'sass-loader' }],
             },
             {
                 test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -71,7 +75,7 @@ const config = {
             {
                 test: /\.hbs$/,
                 loader: "handlebars-loader"
-            }
+            },
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
