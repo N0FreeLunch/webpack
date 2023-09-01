@@ -52,5 +52,6 @@
         %>
         <img src="assets/img/icon-square-big.svg" />
         <%= require('html-loader!../fragments/footerTag.html').default %>
+        <%= require('!!underscore-template-loader!../fragments/footerTag.html')() %>
     </body>
 </html>
