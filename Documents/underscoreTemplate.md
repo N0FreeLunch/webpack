@@ -64,7 +64,7 @@ src/fragments/undercoreSubTag.html
 
 ```html
 <div>
-    <%= 'undercore sub module tag' %>
+    <%= 'undercore sub module tag : ' + param1 + ' ' + param2 %>
 </div>
 ```
 
@@ -74,9 +74,10 @@ src/fragments/footerTag.html
 <footer>
     <div id="footer" style="background-color: darkgreen; color: white">
         <%= 'html-loader로 불러온 footer' %>
-        <%= require('!!underscore-template-loader!./undercoreSubTag.html')() %>
+        <%= require('!!underscore-template-loader!./undercoreSubTag.html')({param1: "hello", param2: "world"}) %>
     </div>
 </footer>
 ```
 
 -   언더스코어 템플릿 html에서 `<%= require('!!underscore-template-loader!다른_underscore_template_경로.html')() %>`의 코드를 사용하여 외부의 underscore 템플릿을 로드하는 방식으로 서브 모듈을 만들어 사용할 수 있다.
+-   이때 함수의 매개변수에 리터럴 오브젝트로 변수를 서브 모듈로 전달할 수 있다. `{param1: "hello", param2: "world"}`을 ()안에 넣어 주면 서브 모듈의 `<%= 'undercore sub module tag : ' + param1 + ' ' + param2 %>`의 `param1`에는 `"hello"`라는 문자열이 바인딩 되고, `param2`에는 `"world"`라는 문자열이 바인딩 된다.
