@@ -170,9 +170,8 @@ yarn add --dev prettier-plugin-ejs
 
 ### handlebars 파일 코드 포매팅
 
--   기본적으로 prettier는 handlebars 포맷을 완벽하게 지원하지 않는다. 따라서 [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)과는 별개로 [handlebars-formatter](https://marketplace.visualstudio.com/items?itemName=mfeckies.handlebars-formatter)라는 확장 프로그램을 추가로 사용하여 코드 포맷팅을 한다.
--   확장 프로그램을 설치한 이후, `.hbs` 파일로 가서 `cmd/ctrl` + `shift` + `p` 키를 누른 후 `문서 서식 프로그램`(`Format Document...`)(`문서 서식`(`Format Document`)과는 다르다. `...`가 뒤에 추가 되었는지의 차이)을 선택한다. 그러면 `Prettier - Code formatter` 와 `handlebars-formatter`를 선택할 수 있는데 `handlebars-formatter`를 선택하여 사용하도록 한다. 한번 선택이 되면 기본적으로 `handlebars-formatter`를 사용하게 된다.
--   `handlebars-formatter`를 사용하더라도 prettier 옵션을 적용받는데 옵션을 조정하고 싶다면 `.prettierrc`에 오버라이드 설정을 추가하여 포매팅 옵션을 조정할 수 있다.
+-   기본적으로 prettier는 handlebars 포맷을 완벽하게 지원하지 않는다. 일반적인 handlebars의 경우에는 [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)과는 별개로 다른 확장 프로그램을 사용하여 코드 포메팅을 사용하기도 한다.
+-   하지만 대부분의 확장 프로그램이 일반적인 handlebars 문법만 지원하는 것에 반해 웹팩에서 사용하는 handlebars는 handlebars-loader이라서 handlebars에서는 지원하지 않는 [몇 가지 구문](https://github.com/pcardune/handlebars-loader#details)에 대한 포메팅 지원을 하지 않아 에러가 발생한다. 따라서 웹팩의 handlebars를 완벽히 지원하는 포메터는 없다. 따라서 handlebar 포메팅을 사용하지 않고 handlebars 파일에 대한 파서를 html으로 설정한다.
 
 .prettierrc
 
@@ -183,11 +182,14 @@ yarn add --dev prettier-plugin-ejs
     {
       "files": "*.hbs",
       "options": {
-        "singleQuote": false
+        "printWidth": 120,
+        "parser": "html"
       }
     }
   ]
   // other configurations...
 ```
 
--   위의 설정은 반드시 설정하는 것이 아닌 **예시 설정**이다. 기본적으로는 위 옵션을 추가할 필요는 없다.
+-   옵션으로 `"parser": "html"` 설정을 하게 되면 확장자가 hbs인 파일은 handlebars로 포메팅하지 않고 html 문법의 방식으로 포메팅이 된다.
+-   대부분의 html의 코드들은 html 파서를 통해서 정렬되며, handlebars에서만 사용되는 문법의 정렬이 잘 되지 않는 문제가 있지만 특별한 문제 없이 사용가능하다. 코드 포멧이 이상하게 변하는 부분이 있다면 html 파서를 이용하고 있기 때문에 `<!-- prettier-ignore -->`를 추가하도록 하자. 특별한 문제 없이 동작한다.
+-   handlebars가 아닌 html 파서로 포메팅을 하기 때문에 handlebars 코드가 이상하게 변하는 경우가 많다. prettier의 디폴트가 한 줄에 문자가 80개 일 때 자동 개행이 일어나도록 되어 있는데, 자동 개행이 될 때 handlebars 문법이 이상하게 변하는 경우가 있다. 이런 경우를 최대한 줄이고자 `"printWidth": 120,` 으로 설정하여 개행이 되는 횟수를 줄이는 방법을 쓰는 것이 좋다.
