@@ -1,24 +1,11 @@
-<div style="border: solid 1px; padding: 10px;">
-    <div>
-        색상별 컬러코드
-    </div>
-    <div>
-        색상명:
-        {{colorName}}
-    </div>
-    <div>
-        16진수 표기 :
-        {{hexadecimal}}
-    </div>
-    <div>
-        RGB 표기 :
-        {{rgb}}
-    </div>
-    <div style="display: flex;">
+<div style="border: solid 1px; padding: 10px">
+    <div>색상별 컬러코드</div>
+    <div>색상명: {{ colorName }}</div>
+    <div>16진수 표기 : {{ hexadecimal }}</div>
+    <div>RGB 표기 : {{ rgb }}</div>
+    <div style="display: flex">
         색상&nbsp;:&nbsp;
-        <div
-            style="background-color: {{hexadecimal}}; width: 2em; height: 2em;"
-        ></div>
+        <div style="background-color: {{ hexadecimal }}; width: 2em; height: 2em;"></div>
     </div>
-    {{> colorDetail link='{{colorName}}' message='good job'}}
+    {{> colorDetail link='{{colorName}}' message='Red has symbolized wealth andpower' }}
 </div>
