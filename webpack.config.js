@@ -15,10 +15,10 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 const config = {
     entry: {
         index: [
-            "./src/js/index.js",
+            "./src_study/js/index.js",
         ],
         sub: [
-            "./src/js/sub.js"
+            "./src_study/js/sub.js"
         ]
     },
     output: {
@@ -30,12 +30,12 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: 'src/pages/index.html',
+            template: 'src_study/pages/index.html',
             chunks: ['index'],
         }),
         new HtmlWebpackPlugin({
             filename: 'subpage/index.html',
-            template: 'src/pages/subpage.html',
+            template: 'src_study/pages/subpage.html',
             chunks: ['sub'],
         }),
 
@@ -43,7 +43,7 @@ const config = {
 
         new CopyPlugin({
             patterns: [
-                { from: "src/assets", to: "assets" },
+                { from: "src_study/assets", to: "assets" },
             ],
         }),
 
