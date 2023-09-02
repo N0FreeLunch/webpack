@@ -16,7 +16,7 @@ yarn add underscore-template-loader
 
 ### 언더스코어 템플릿 만들기
 
-src/fragments/footerTag.html
+src_study/fragments/footerTag.html
 
 ```html
 <footer>
@@ -28,7 +28,7 @@ src/fragments/footerTag.html
 
 -   기존의 코드에 `html-loader로 불러온 footer` html 코드를 `<%= 'html-loader로 불러온 footer' %>`의 ejs 코드로 바꿔보자.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
 <body>
@@ -60,7 +60,7 @@ src/pages/index.html
 
 ### 서브 모듈 만들기
 
-src/fragments/undercoreSubTag.html
+src_study/fragments/undercoreSubTag.html
 
 ```html
 <div>
@@ -68,7 +68,7 @@ src/fragments/undercoreSubTag.html
 </div>
 ```
 
-src/fragments/footerTag.html
+src_study/fragments/footerTag.html
 
 ```html
 <footer>

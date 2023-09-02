@@ -50,7 +50,7 @@
 -   하지만 표준 html 문법이 아니기 때문에 prettier로 코드 스타일을 변경하면 `<%=` `%>`와 그 사이의 코드가 적절히 조정되지 않는 문제가 생긴다.
 -   따라서 `<%=` `%>` 사이의 코드가 여러 줄이 되는 경우에는 prettier의 포멧팅이 적용되지 않도록 해 주어야 한다. html에서는 `<!-- prettier-ignore -->` 라는 코드를 태그 바로 위에 적어 주면 `<!-- prettier-ignore -->`에 바로 이러진 태그는 prettier의 포메팅 대상에서 제외한다.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
     <!-- prettier-ignore -->
@@ -73,10 +73,10 @@ src/pages/index.html
 .prettierignore
 
 ```
-src/pages/*.html
+src_study/pages/*.html
 ```
 
--   위와 같이 설정하면 `src/pages` 폴더 안의 모든 html 파일에 prettier 포매팅이 적용되지 않는다.
+-   위와 같이 설정하면 `src_study/pages` 폴더 안의 모든 html 파일에 prettier 포매팅이 적용되지 않는다.
 
 ### ejs 플러그인을 prettier에 적용하기
 
@@ -112,7 +112,7 @@ yarn add --dev prettier-plugin-ejs
 
 ### `<%` `%>` 사이에는 html 태그를 적을 때
 
--   html에서 prettier는 태그 형식의 포맷팅을 우선시한다. `src/pages/index.html` 파일 안에 `<% const tag = `<h2>index.html</h2>` %>`라는 코드를 적어 보자. prettier를 적용하면 태그를 들여쓰기 다음에 위치시키기 위해 prettier는 태그의 전후를 강제로 개행한다.
+-   html에서 prettier는 태그 형식의 포맷팅을 우선시한다. `src_study/pages/index.html` 파일 안에 `<% const tag = `<h2>index.html</h2>` %>`라는 코드를 적어 보자. prettier를 적용하면 태그를 들여쓰기 다음에 위치시키기 위해 prettier는 태그의 전후를 강제로 개행한다.
 
 ```html
     <% const tag = `

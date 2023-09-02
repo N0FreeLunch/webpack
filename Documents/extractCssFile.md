@@ -100,7 +100,7 @@ rules: [
 
 ### scss 사용하기
 
-src/css/page.scss
+src_study/css/page.scss
 
 ```scss
 body {
@@ -113,10 +113,10 @@ body {
 
 -   위의 파일을 만들도록 하자.
 
-src/js/index.js
+src_study/js/index.js
 
 ```js
 import '../css/page.scss';
 ```
 
--   위와 같이 `import` 키워드로 `scss` 파일을 로드하여 웹팩의 entry에서 `src/js/index.js`가 변환된 청크를 `new HtmlWebpackPlugin()`에서 사용할 때 `chunk` 옵션에 변환된 청크명을 지정해 주면, 지정된 웹 페이지가 로드될 때 scss가 css 파일로 변환되어 html의 `<link>`태그에 의해 로드된다.
+-   위와 같이 `import` 키워드로 `scss` 파일을 로드하여 웹팩의 entry에서 `src_study/js/index.js`가 변환된 청크를 `new HtmlWebpackPlugin()`에서 사용할 때 `chunk` 옵션에 변환된 청크명을 지정해 주면, 지정된 웹 페이지가 로드될 때 scss가 css 파일로 변환되어 html의 `<link>`태그에 의해 로드된다.

@@ -14,7 +14,7 @@ yarn add handlebars-loader
 
 ### 템플릿 파일 만들기
 
--   `src/fragments` 폴더에 `colorInfo.hbs`라는 파일을 만들어 보자.
+-   `src_study/fragments` 폴더에 `colorInfo.hbs`라는 파일을 만들어 보자.
 
 ```hbs
 <div>
@@ -32,7 +32,7 @@ yarn add handlebars-loader
 
 ### 사용하기
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```
 <!-- other code... -->
@@ -62,7 +62,7 @@ src/pages/index.html
 
 ### 서브모듈 사용하기
 
-src/fragments/colorDetail.hbs
+src_study/fragments/colorDetail.hbs
 
 ```html
 <div style="border: solid 1px; padding: 10px;">
@@ -75,7 +75,7 @@ src/fragments/colorDetail.hbs
 </div>
 ```
 
-src/fragments/colorInfo.hbs
+src_study/fragments/colorInfo.hbs
 
 ```html
 <div style="border: solid 1px; padding: 10px;">

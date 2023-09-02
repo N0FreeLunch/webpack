@@ -10,7 +10,7 @@
 
 -   먼저 EJS를 사용하기에 앞서 html 파일에서 ejs를 보면 syntax highlight 가 활성화 되어 있지 않은 것을 확인할 수 있다.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
 <body>
@@ -56,7 +56,7 @@ require('../fragments/transmitMsgTag.js')
 -   ejs에서 공식적으로 지원하는 태그 문법은 `<%`, `<%_`, `<%=`, `<%-`, `<%#`, `<%%`, `%>`, `-%>`, `_%>`이다. 하지만 html-webpack-plugin에서 사용할 수 있는 lodash ejs에서 사용할 수 있는 태그 문법은 `<%`, `<%_`, `<%=` 뿐이다.
 -   html-webpack-plugin는 [lodash template](https://lodash.com/docs/4.17.15#template)를 기반으로 만들어졌는데, 여기서 지원하는 ejs 태그 문법을 사용한 설명이 적혀 있다.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
 <%= `
@@ -90,7 +90,7 @@ src/pages/index.html
 
 -   `<%`와 `%>` 사이에는 자바스크립트 코드를 넣을 수 있다. 그런데 `<%=`나 `<%-`에는 문자열을 출력하는 기능이 있는 반면 `<%`와 `%>`는 문자열을 출력하는 기능이 없다.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
 <% const tag = `
@@ -104,7 +104,7 @@ src/pages/index.html
 
 -   `<%` `%>` 사이의 코드는 출력이 되지 않지만 자바스크립트 문법을 사용할 수 있다. 여기서 `tag` 변수에 할당한 값을 그 다음에 나오는 ejs 태그에서 사용할 수 있다.
 
-src/pages/index.html
+src_study/pages/index.html
 
 ```html
 <% if(true) {%>
