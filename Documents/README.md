@@ -1,6 +1,7 @@
 ## 목차
 
 -   [왜 웹팩을 사용하는가?](./whyUseWebpack.md)
+-   [정적 사이트 생성기](./staticSiteGenerator.md)
 -   [웹팩 설치하기](./install.md)
 -   [.gitignore 설정하기](./createDotGitignore.md)
 -   [PWA 사용하기](./supportPWA.md)
