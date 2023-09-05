@@ -19,6 +19,9 @@ const config = {
         ],
         sub: [
             "./src_study/js/sub.js"
+        ],
+        '/404': [
+            "/src_study/css/404.scss"
         ]
     },
     output: {
@@ -37,6 +40,11 @@ const config = {
             filename: 'subpage/index.html',
             template: 'src_study/pages/subpage.html',
             chunks: ['sub'],
+        }),
+        new HtmlWebpackPlugin({
+            filename: '404.html',
+            template: 'src_study/pages/404.html',
+            chunks: ['/404'],
         }),
 
         new MiniCssExtractPlugin(),
