@@ -1,9 +1,18 @@
 #page_not_found_wrapper {
-    #http_status {
-        font-size: 50px;
-    }
+    height: 98vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    #page_not_found_message {
-        font-size: 30px;
+    #page_not_found_contents {
+        text-align: center;
+
+        #http_status {
+            font-size: 50px;
+        }
+    
+        #page_not_found_message {
+            font-size: 30px;
+        }
     }
 }
