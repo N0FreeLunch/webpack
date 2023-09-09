@@ -54,6 +54,31 @@ const config = {
 -   `HtmlWebpackPlugin` 설정을 할 때 `filename` 옵션은 dev 서버에서 실행을 할 때의 URL의 PATH에 해당한다. dev 서버에서 `template: "src_study/pages/subpage.html"`으로 생성된 웹 페이지로 접근하려면 `filename` 옵션으로 지정한 PATH를 포함한 `http://localhost:8080/subpage.html`으로 접근할 수 있다.
 -   `filename`이 없는 경우 메인 페이지로 설정이되며 추가 PATH 없이 `http://localhost:8080`으로 접근할 수 있다. `index.html`가 현제 메인 페이지로 설정되어 있다.
 
+### 접속 경로에 `.html` 지우기
+- 브라우저는 웹 페이지를 표시하기 위해 서버 컴퓨터의 공유 폴더의 html 파일에 접근하여 html 파일을 다운로드 한 후 내부 코드를 해석하여 브라우저의 화면을 만든다.
+- html 파일을 다운로드 해야 하므로 URL의 경로에는 공유 폴더의 html 파일 경로를 지정해 줘야 한다. 따라서 브라우저에서 html 파일에 접근하기 위해서는 공유 폴더의 파일을 가리키는 마지막이 .html으로 끝나는 경로를 적어 줘야 한다.
+- 하지만 대부분의 웹 사이트에서는 .html으로 끝나지 않는 경로를 사용하는데, 이는 파일 경로를 지정하지 않고 폴더의 경로를 지정하면 지정된 폴더 안의 index.html 파일을 자동으로 접근하는 기능이 제공되기 때문이다.
+
+```js
+const config = {
+  // 다른 설정 옵션들
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "src_study/pages/index.html",
+    }),
+    new HtmlWebpackPlugin({
+      filename: "subpage/index.html",
+      template: "src_study/pages/subpage.html",
+    }),
+    // 다른 플러그인 설정들
+  ],
+  // 다른 설정 옵션들
+};
+```
+- URL의 루트 경로의 index.html 파일에 도메인명으로 접근가능한 것도 도메인 뒤에 아무 경로도 적지 않으면 서버 컴퓨터의 공유폴더를 가리키는 것이 되고 공유 폴더 자식 파일들 중에서 index.html으로 자동접근하기 때문이다.
+- 위의 예제코드와 같이 `subpage.html`을 `subpage/index.html`으로 써 주면 `subpage` 폴더의 자식 파일로 `index.html` 파일이 생성되고, 브라우저가 URL로 `subpage` 경로의 폴더를 접근하게 되면 해당 폴더의 자식 파일에서 index.html으로 자동으로 접근하기 때문에 `http(s)://도메인/subpage.html`으로 접근하는 주소를 `http(s)://도메인/subpage`으로 접근하게 바꿀 수가 있다.
+- 정적 사이트에서 이 원리를 몰라서 `.html` 경로의 주소를 사용하는 경우가 많은데 `.html` 없는 주소를 사용하여 어설프게 만들지 않도록 하자.
+
 ### 페이지에 자바스크립트 추가하기
 
 -   HTML 파일에 자바스크립트를 로드하는 `script` 태그가 없어도 dev 서버를 실행할 때나, `yarn run watch` 또는 `yarn run build`를 사용하여 빌드된 HTML에는 웹팩에 지정된 자바스크립트 파일을 연결하는 `script` 태그가 자동적으로 생성이 된다.
