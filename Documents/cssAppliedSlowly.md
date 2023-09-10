@@ -89,3 +89,24 @@ const config = {
 ```
 
 -   위 코드는 CSS 파일과 SASS 파일이 서로 구분되어 `style` 태그로 로딩된다는 단점이 있다.
+
+### CSS가 적용되기 전에 화면을 감추는 방법
+
+-   style 태그를 사용하면 생성되는 html 코드가 보기에 좋지 않다.
+-   style 태그 뿐만 아니라 태그에 직접 style 속성을 주는 방법을 사용해도 브라우저가 태그의 속성을 다 읽고 다음 태그를 로딩하기 때문에 태그가 화면에 보여지는 즉시 CSS가 적용된다는 장점이 있다.
+-   하지만 태그에 스타일을 입히는 방법으로 모든 태그에 style 속성을 넣는 것은 비효율적인 측면이 있다.
+
+```html
+<div id="initial_loading_screen" style="position: fixed; width: 100vw; height: 100vh; background-color: white; z-index: 99999"></div>
+```
+
+-   위의 코드를 body의 첫번째 태그로 추가한다. 다른 태그가 화면에 표기 되기전에 화면을 하얀 배경으로 덮어서 보이지 않게 만들기 위해서이다.
+
+```css
+#initial_loading_screen {
+    display: none;
+}
+```
+
+-   link 태그로 불러오는 CSS의 코드에 위 코드를 추가하면 위 코드가 있는 CSS 파일이 로딩되기 전까지 웹 페이지는 initial_loading_screen 태그로 인해 하얀 배경 화면만 보이게 되고 CSS를 다운로드하고 CSS가 적용되는 시점에 initial_loading_screen 태그가 보이지 않게 되면서 모든 태그에 CSS가 적용된 화면을 한 순간에 보여주는 효과를 줄 수 있다.
+-   mini-css-extract-plugin을 사용해서 CSS 파일을 link 태그로 분리하는 방식을 사용하는 경우에는 웹의 사용자 경험을 위해서 위와 같은 방법을 사용하는 것을 추천한다.
