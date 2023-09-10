@@ -10,6 +10,7 @@
 -   [여러 페이지 설정하기](./multiPage.md)
 -   [CSS 설정하기](./configureCss.md)
 -   [CSS 파일 분리하기](./extractCssFile.md)
+-   [CSS가 느리게 로딩되는 문제 해결하기](./cssAppliedSlowly.md)
 -   [폴더 및 파일 구조](./folderFileStructure.md)
 -   [이미지 파일 불러오기](./dealingAssetFiles.md)
 -   [공통 템플릿 만들기](./commonTemplate.md)
