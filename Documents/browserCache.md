@@ -43,3 +43,31 @@ https://github.com/search?q=webpack&type=repositories
 -   웹팩은 자바스크립트를 번들링하는 도구이다. 물론 각종 로더를 사용해서 CSS, SASS, html 파일 등을 자바스크립트로 불러올 수 있다.
 -   캐시 문제를 해결하기 위해서 자바스크립트 파일의 이름을 변경하면, 변경된 이름의 파일을 html에서 불러와야 한다. 웹팩은 해시라는 기능을 제공하는데 해시를 사용하면 파일이름을 암호화 된 것 처럼 만들 수 있다. 빌드 할 때마다 매번 새로운 해시값이 만들어지기 때문에 브라우저 캐싱을 무효화 할 수 있는 기능을 제공하며, 해시라는 임의의 문자열을 사용하기 때문에 파일명이 무엇을 가리키는지 숨기는 역할을 하여 웹으로 제공되는 코드의 의미 파악을 어렵게하여 소스코드가 분석되기 어렵게 하여 세큐리티적으로 좀 더 좋은 결과물을 만들 수 있다.
 -   html-webpack-plugin 플러그인으로 html 파일을 만든다면 `webpack.config.js`의 플러그인에서 `new HtmlWebpackPlugin`에 옵션으로 지정한 `chunks` 자바스크립트 청크명을 지정하는 것으로 자바스크립트를 html 파일에 주입한다. 따라서 웹팩이 자바스크립트 파일명을 해시화하더라도 html 파일에서는 해시화 된 이름을 가진 경로를 스크립트 태그의 경로에 할당한다.
+
+```js
+const config = {
+    entry: {
+        index: {
+            import: "./src_study/js/index.js",
+            filename: "js/[chunkhash].js"
+        },
+        sub: {
+            import: "./src_study/js/sub.js",
+            filename: "js/[chunkhash].js"
+        },
+    }
+    // other configulations...
+}
+
+// other configulations...
+```
+
+-   빌드된 파일명의 규칙에 대한 설명으로는 [웹팩 공식문서](https://webpack.js.org/configuration/output/#template-strings)를 참고하도록 하자.
+
+#### 템플릿 스트링
+
+-   템플릿 스트링은 생성되는 파일의 경로의 이름을 부여하기 위해 `entry`나 `output`에서 사용되는 명명 규칙이다.
+-   [fullhash] : 컴파일 할 때마다 생성되는 해쉬로 동일한 명령 동일한 시점에 빌드된 대상에 부여된 fullhash는 모두 동일한 해시 값을 갖는다. 캐싱을 방지하기 위해 쿼리스트링에 부여하는 해시명으로 사용하기에 적합하다.
+-   [name] : `entry` 키값의 청크명을 부여한다. 위의 예에서 `index`란 이름과 `sub`라는 이름이 `[name]` 부분에 할당된다.
+-   [chunkhash] : 각각의 청크에 부여되는 해쉬값으로 청크마다 다른 해쉬 값이 만들어진다. 빌드 할 때마다 모든(변경된 파일 뿐만 아닌) 청크에 새로운 해시값이 부여된다. 생성되는 자바스크립트마다 서로 다른 파일명을 부여할 때 사용한다.
+-   [contenthash] : 변경한 청크에 대해서만 새로운 해시값이 생성된다. 변경하지 않은 청크에는 기존의 해시값을 부여할 수 있기 때문에, 변경된 부분만 캐시를 무효화 할 수 있는 옵션으로 사용된다. 보통 프로덕션 환경에서는 `chunkhash` 보다 `contenthash` 옵션을 많이 사용한다.
