@@ -45,21 +45,22 @@ https://github.com/search?q=webpack&type=repositories
 -   html-webpack-plugin 플러그인으로 html 파일을 만든다면 `webpack.config.js`의 플러그인에서 `new HtmlWebpackPlugin`에 옵션으로 지정한 `chunks` 자바스크립트 청크명을 지정하는 것으로 자바스크립트를 html 파일에 주입한다. 따라서 웹팩이 자바스크립트 파일명을 해시화하더라도 html 파일에서는 해시화 된 이름을 가진 경로를 스크립트 태그의 경로에 할당한다.
 
 ```js
+// other setting code...
 const config = {
     entry: {
         index: {
             import: "./src_study/js/index.js",
-            filename: "js/[chunkhash].js"
+            filename: "js/[contenthash].js"
         },
         sub: {
             import: "./src_study/js/sub.js",
-            filename: "js/[chunkhash].js"
+            filename: "js/[contenthash].js"
         },
     }
     // other configulations...
 }
 
-// other configulations...
+// other setting code...
 ```
 
 -   빌드된 파일명의 규칙에 대한 설명으로는 [웹팩 공식문서](https://webpack.js.org/configuration/output/#template-strings)를 참고하도록 하자.
@@ -71,3 +72,35 @@ const config = {
 -   [name] : `entry` 키값의 청크명을 부여한다. 위의 예에서 `index`란 이름과 `sub`라는 이름이 `[name]` 부분에 할당된다.
 -   [chunkhash] : 각각의 청크에 부여되는 해쉬값으로 청크마다 다른 해쉬 값이 만들어진다. 빌드 할 때마다 모든(변경된 파일 뿐만 아닌) 청크에 새로운 해시값이 부여된다. 생성되는 자바스크립트마다 서로 다른 파일명을 부여할 때 사용한다.
 -   [contenthash] : 변경한 청크에 대해서만 새로운 해시값이 생성된다. 변경하지 않은 청크에는 기존의 해시값을 부여할 수 있기 때문에, 변경된 부분만 캐시를 무효화 할 수 있는 옵션으로 사용된다. 보통 프로덕션 환경에서는 `chunkhash` 보다 `contenthash` 옵션을 많이 사용한다.
+
+#### 에셋 캐시 무효화하기
+
+-   HtmlWebpackPlugin을 사용할 때 옵션 중에 하나는 hash 옵션이 있다. 이 옵션은 설정을 하지 않으면 false로 적용하지 않는 것이 디폴트이지만, true로 활성화 할 수 있다.
+-   `hash: true`를 옵션을 설정하면 브라우저에서 파일을 불러 올 때 entry로 빌드되는 파일을 불러올 때 `?2a52519a8884d9420bc3`와 같은 쿼리 스트링 형식의 해시가 추가 된다. 이 해시는 컴파일 할 때마다 다른 값으로 생성되는 템플릿 스트링의 fullhash의 값을 사용한다. 파일을 불러올 때 PATH 뒤에 붙는 쿼리 스트링과 `[fullhash]`로 빌드된 자바스크립트 파일명에 남겨진 해시를 비교해 보면 다르다는 것을 알 수 있다.
+-   HtmlWebpackPlugin을 사용한다면 쿼리스트링으로 해시값이 entry로 만들어지는 파일의 url에 붙기 때문에 entry에 캐시 무효화를 위해 해시값을 만드는 fullhash, chunkhash, contenthash 등을 사용할 필요는 없다.
+
+```js
+// other setting code...
+const config = {
+    // other configulations...
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'src_study/pages/index.html',
+            chunks: ['index'],
+            hash: true,
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'subpage/index.html',
+            template: 'src_study/pages/subpage.html',
+            chunks: ['sub'],
+            hash: true,
+        }),
+        // other plugin settings...
+    ],
+    // other configulations...
+}
+
+// other setting code...
+```
+
+-   위 설정의 단점으로는 enrty를 기반으로 만들어지는 js파일 및 css파일에만 해시 값을 적용한다는 점이다. template 옵션으로 지정되는 파일의 href 또는 src 등의 속성으로 불러오는 주소에는 해시가 쿼리 스트링으로 추가되지 않는다.
