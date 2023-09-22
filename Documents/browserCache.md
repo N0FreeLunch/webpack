@@ -135,3 +135,31 @@ const config = {
 -   웹팩에서 assets 폴더의 에셋 파일은 이미지 또는 폰트 파일으로 개발자가 직접 코드를 작성하지 않는 파일이 위치하는 곳이다.
 -   에셋으로 분류되는 파일은 대개 용량이 크며, 웹팩의 설정으로 이러한 파일들이 빌드가 되면 그 때 그 때 빌드의 결과 파일이 달라질 수 있게 되고, 용량이 큰 파일이 추가되고 삭제되는 일이 발생하여 깃으로 추적되는 에셋 파일의 기록이 차지하는 용량이 크게 증가하는 문제점이 발생한다. 이러한 문제를 방지하기 위해서 빌드되는 파일의 변경을 최소화해야 하고 가능한 하지 않는 방법으로 에셋 파일은 복사의 방식으로 빌드 폴더에 위치하게 된다.
 -   동일한 코드를 가진 파일의 경우 파일명만 바뀔 때 깃은 파일이름 변경(rename)으로 판단한다. 이러한 원리를 이용해서 빌드되는 에셋 파일의 파일명을 바꾸는 방법을 생각해 볼 수 있다. 빌드가 될 때마다 에셋 파일은 깃에서는 파일의 삭제와 추가로 판단하지 않고 rename이 되면서 깃으로 추적되는 용량의 증가를 억제할 수 있다.
+-   `patterns: [{ from: 'src/assets', to: 'assets/[name].[contenthash][ext]' }],`와 같은 방식으로 패턴을 정해주면 새성되는 파일의 이름에 `파일_이름.해시.확장자`가 붙는 방법으로 복사를 할 수 있다.
+-   하지만 파일이름을 변경하는 방식을 사용하면 복사된 파일을 불러올 때도 파일명을 바꿔줘야 하는 문제가 생긴다. `src/pages`(현재 예제에서는 `src_study/pages`) 폴더의 html 파일 내에서 불러오는 에셋 파일의 이름이 빌드 때마다 변하게 되고 `src/assets` 안의 파일경로를 이용해서 빌드 폴더에 복사된 파일 이름이 생성되는 로직을 만들어야 한다. 이런 방식이 까다롭기 때문에 에셋 파일을 빌드했을 때 파일명이 바뀌는 방법을 사용하지 않는다. 대신 asset-loader를 사용한다.
+
+### asset-loader
+
+-   자바스크립트에서는 기본적으로 이미지, 폰트 등의 웹팩에서 에셋으로 분류되는 파일을 require 또는 import와 같은 키워드로 불러올 수 없다.
+-   에셋 파일은 용량이 크기 때문에 자바스크립트 코드 내에서 이 파일들이 담고 있는 코드를 처리하게 되면 많은 처리 부하 및 시간을 사용하게 된다. 따라서 이들 파일을 자바스크립트로 불러오는 것은 웹팩으로 빌드되었을 때의 파일의 주소를 가져오는 역할을 한다.
+-   에셋 로더를 통해서 에셋 파일을 로드하게 되면, 대상 파일은 임의의 해시값의 파일명으로 빌드된다. 그런데 해시값의 파일명이 되어도 빌드된 경로로 연결되는 경로를 받환한다. 따라서 CopyPlugin으로 빌드될 때의 파일명에 해시값을 부여하는 방법이 변경된 해시 값의 파일의 경로를 지정하기 어려운 것과 달리 asset-loader는 빌드된 파일명의 접근을 쉽게할 수 있다.
+
+#### asset 예제 코드
+
+-   [png 형식의 이미지 파일](https://github.com/webpack/webpack.js.org/blob/main/src/assets/icon-square-small-slack.png)을 다운 받아서 `src_study/assets/img/icon-square-small-slack.png` 경로에 저장하자.
+
+src_study/pages/index.html
+
+```html
+<div class="img-wrapper">
+            <img src="assets/img/icon-square-big.svg" />
+        </div>
+<div class="img-wrapper">
+    <img src="<%= require('../assets/img/icon-square-big.svg') %>" />
+</div>
+<div class="img-wrapper">
+    <img
+        src="<%= require('../assets/img/icon-square-small-slack.png') %>"
+    />
+</div>
+```
