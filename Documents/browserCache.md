@@ -138,13 +138,13 @@ const config = {
 -   `patterns: [{ from: 'src/assets', to: 'assets/[name].[contenthash][ext]' }],`와 같은 방식으로 패턴을 정해주면 새성되는 파일의 이름에 `파일_이름.해시.확장자`가 붙는 방법으로 복사를 할 수 있다.
 -   하지만 파일이름을 변경하는 방식을 사용하면 복사된 파일을 불러올 때도 파일명을 바꿔줘야 하는 문제가 생긴다. `src/pages`(현재 예제에서는 `src_study/pages`) 폴더의 html 파일 내에서 불러오는 에셋 파일의 이름이 빌드 때마다 변하게 되고 `src/assets` 안의 파일경로를 이용해서 빌드 폴더에 복사된 파일 이름이 생성되는 로직을 만들어야 한다. 이런 방식이 까다롭기 때문에 에셋 파일을 빌드했을 때 파일명이 바뀌는 방법을 사용하지 않는다. 대신 asset-loader를 사용한다.
 
-### asset-loader
+### [Asset-Modules](https://webpack.js.org/guides/asset-modules)
 
 -   자바스크립트에서는 기본적으로 이미지, 폰트 등의 웹팩에서 에셋으로 분류되는 파일을 require 또는 import와 같은 키워드로 불러올 수 없다.
 -   에셋 파일은 용량이 크기 때문에 자바스크립트 코드 내에서 이 파일들이 담고 있는 코드를 처리하게 되면 많은 처리 부하 및 시간을 사용하게 된다. 따라서 이들 파일을 자바스크립트로 불러오는 것은 웹팩으로 빌드되었을 때의 파일의 주소를 가져오는 역할을 한다.
--   에셋 로더를 통해서 에셋 파일을 로드하게 되면, 대상 파일은 임의의 해시값의 파일명으로 빌드된다. 그런데 해시값의 파일명이 되어도 빌드된 경로로 연결되는 경로를 받환한다. 따라서 CopyPlugin으로 빌드될 때의 파일명에 해시값을 부여하는 방법이 변경된 해시 값의 파일의 경로를 지정하기 어려운 것과 달리 asset-loader는 빌드된 파일명의 접근을 쉽게할 수 있다.
+-   에셋 모듈를 통해서 에셋 파일을 로드하게 되면, 대상 파일은 임의의 해시값의 파일명으로 빌드된다. 그런데 해시값의 파일명이 되어도 빌드된 경로로 연결되는 경로를 반환한다. 따라서 CopyPlugin으로 빌드될 때의 파일명에 해시값을 부여하는 방법이 변경된 해시 값의 파일의 경로를 지정하기 어려운 것과 달리 asset-module은 빌드된 파일명의 접근을 쉽게할 수 있다.
 
-#### asset 예제 코드
+#### asset 모듈을 사용하는 예제 코드
 
 -   [png 형식의 이미지 파일](https://github.com/webpack/webpack.js.org/blob/main/src/assets/icon-square-small-slack.png)을 다운 받아서 `src_study/assets/img/icon-square-small-slack.png` 경로에 저장하자.
 
@@ -152,14 +152,17 @@ src_study/pages/index.html
 
 ```html
 <div class="img-wrapper">
-            <img src="assets/img/icon-square-big.svg" />
-        </div>
+    <img src="assets/img/icon-square-big.svg" / >
+</div>
 <div class="img-wrapper">
     <img src="<%= require('../assets/img/icon-square-big.svg') %>" />
 </div>
 <div class="img-wrapper">
-    <img
-        src="<%= require('../assets/img/icon-square-small-slack.png') %>"
-    />
+    <img src="<%= require('../assets/img/icon-square-small-slack.png') %>"/>
 </div>
 ```
+
+-   위와 같은 세 가지 방식으로 이미지를 로드 할 수 있다.
+-   첫 번째 방식은 이미지 주소를 그대로 사용하는 것이다. 이 때는 대상 이미지 주소가 빌드된 폴더를 기준으로 한 파일 경로와 동일해야 한다.
+-   두 번째와 세 번째 방식은 `require` 키워드를 사용해서 이미지를 불러오는 방식이다. 웹팩에서는 자바스크립트로 외부 코드를 불러오면 로더가 적용되는데, 에셋 모듈은 로더로 분류되지는 않지만 로더의 기능을 가지고 있다. (에셋 모듈이 등장하기 전인 웹팩 4에서는 모듈을 사용해서 이미지나 폰트 파일을 불러왔다고 한다.)
+-   두 번째는 svg 파일을, 세 번째는 png 파일을 로드하는데 빌드를 하거나 dev-server를 사용해 보면 svg 파일은 base64로 변환이 되고, png 파일은 빌드된 파일의 이름을 가지는 경로를 갖게 된다.
