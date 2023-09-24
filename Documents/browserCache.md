@@ -144,6 +144,30 @@ const config = {
 -   에셋 파일은 용량이 크기 때문에 자바스크립트 코드 내에서 이 파일들이 담고 있는 코드를 처리하게 되면 많은 처리 부하 및 시간을 사용하게 된다. 따라서 이들 파일을 자바스크립트로 불러오는 것은 웹팩으로 빌드되었을 때의 파일의 주소를 가져오는 역할을 한다.
 -   에셋 모듈를 통해서 에셋 파일을 로드하게 되면, 대상 파일은 임의의 해시값의 파일명으로 빌드된다. 그런데 해시값의 파일명이 되어도 빌드된 경로로 연결되는 경로를 반환한다. 따라서 CopyPlugin으로 빌드될 때의 파일명에 해시값을 부여하는 방법이 변경된 해시 값의 파일의 경로를 지정하기 어려운 것과 달리 asset-module은 빌드된 파일명의 접근을 쉽게할 수 있다.
 
+#### asset 모듈 설정하기
+
+webpack.config.js
+
+```js
+// other configulation...
+const config = {
+    // other configulation...
+    module: {
+        rules: [
+            // other rules...
+            {
+                test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+                type: 'asset',
+            },
+            // other rules...
+        ]
+    }
+}
+// other configulation...
+```
+
+-   에셋 모듈은 로더는 아니지만 웹팩5 이상의 버전에서 기본적으로 제공되는 모듈으로 modules의 rule에 type을 `'asset'`으로 적어주는 것으로 에셋 모듈을 사용할 수 있다.
+
 #### asset 모듈을 사용하는 예제 코드
 
 -   [png 형식의 이미지 파일](https://github.com/webpack/webpack.js.org/blob/main/src/assets/icon-square-small-slack.png)을 다운 받아서 `src_study/assets/img/icon-square-small-slack.png` 경로에 저장하자.
