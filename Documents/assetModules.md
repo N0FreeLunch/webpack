@@ -105,3 +105,32 @@ const config = {
 -   위의 예제는 확장자가 svg인 파일을 자바스크립트 모듈로 로드할 때, 인라인 에셋을 적용하여 파일의 내용을 Base64의 문자열 값으로 가져온다는 설정이다.
 -   예를 들어 `import metroMap from './images/metro.svg';`라는 코드로 svg 파일을 로드했다고 해 보자. 그러면 `metroMap` 변수 안에는 `data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDo...vc3ZnPgo=`와 같은 형식의 Base64로 된 코드가 담기게 된다. 브라우저가 html, css, js를 해석할 때 Base64의 코드도 해석하는 기능이 있으므로 ``block.style.background = `url(${metroMap})`;``와 같이 이 코드를 파일 경로 대신 사용하면 파일을 로드하지 않고 Base64로 된 코드의 이미지를 사용한다.
 -   Base64의 코드를 사용할 때 주의할 점으로는 Base64 코드를 나열하기 전에 파일 포멧이 무엇인지 알려주는 `data:image/svg+xml;base64,`와 같은 코드가 있어야 한다는 것이다. 해당 코드가 어떤 해석 기능으로 읽어야하는지 svg 해석 기능으로 읽어야 하는지 png 해석 기능으로 읽어야 하는지 jpg 해석 기능으로 읽어야 하는지 정해줘야 코드를 적절한 해석 기능으로 이미지화 할 수 있다. 이미지 파일 뿐만 아니라 다른 파일도 마찬가지이다.
+
+#### 다른 인코딩 방식 사용하기
+
+-   기본적으로 인라인 에셋으로 자바스크립트 모듈로 불러온 파일은 Base64 포멧으로 변경이 된다. 단순히 파일의 데이터를 Base64 형태로 변경하는 것 뿐만 아니라, 이미지 파일의 경우 이미지의 압축 및 해상도 조정 등의 작업을 먼저 거치고 그 후에 Base64 포멧으로 변경하는 등의 방식을 사용하고 싶을 때도 있다.
+-   웹팩은 이런 경우를 위해 사용자 지정 인코딩을 사용할 수 있는 옵션을 제공한다.
+
+```js
+const svgToMiniDataURI = require('mini-svg-data-uri');
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.svg/,
+        type: 'asset/inline',
+        generator: {
+          dataUrl: content => {
+            content = content.toString();
+            return svgToMiniDataURI(content);
+          }
+        }
+      }
+    ]
+  },
+};
+```
+
+-   위의 코드의 경우 `svgToMiniDataURI`라는 라이브러리가 제공하는 함수를 사용해서 파일 내부의 값을 인코딩하는 예제이다.
+-   브라우저의 이미지 해석 기능에는 특정 유형의 압축된 이미지를 압축을 풀고 보여주는 기능이 있으므로 브라우저에서 해석될 수 있는 최대한의 압축을 하는 편이 좋다. svg 파일에 대해 최대한의 압축을 해 주는 패키지가 `mini-svg-data-uri` 패키지이다. 라이브러리에 대한 상세는 [링크](https://github.com/tigt/mini-svg-data-uri)를 통해서 확인하자.
