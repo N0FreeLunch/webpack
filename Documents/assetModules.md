@@ -112,24 +112,30 @@ const config = {
 -   웹팩은 이런 경우를 위해 사용자 지정 인코딩을 사용할 수 있는 옵션을 제공한다.
 
 ```js
+// other webpack settings...
 const svgToMiniDataURI = require('mini-svg-data-uri');
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.svg/,
-        type: 'asset/inline',
-        generator: {
-          dataUrl: content => {
-            content = content.toString();
-            return svgToMiniDataURI(content);
-          }
-        }
-      }
-    ]
-  },
+// other webpack settings...
+const config = {
+    // other configulations...
+    module: {
+        rules: [
+            // other module options...
+            {
+                test: /\.svg/,
+                type: 'asset/inline',
+                generator: {
+                    dataUrl: content => {
+                        content = content.toString();
+                        return svgToMiniDataURI(content);
+                    }
+                }
+            }
+        // other module options...
+        ]
+    },
+  // other configulations...
 };
+// other webpack settings...
 ```
 
 -   위의 코드의 경우 `svgToMiniDataURI`라는 라이브러리가 제공하는 함수를 사용해서 파일 내부의 값을 인코딩하는 예제이다.
@@ -137,4 +143,35 @@ module.exports = {
 
 ### 소스 에셋
 
--   소스 에셋은 자바스크립트 모듈로 불러온 파일의 문자를 어떠한 변환 없이 그대로 보여주는 역할을 한다. 이때 파일의 문자는 utf-8 형태의 문자열을 포함해야 파일 내부의 문자열을 가져올 수 있다. utf-8 형식의 문자열이 아닌 경우 문자열이 다르게 표기 될 수 있으며 일부 데이터가 소실되어 보일 수 있다. utf-8에 대한 처리에 관한 자세한 사항은 [링크](https://github.com/webpack-contrib/raw-loader/pull/93)를 참고하자.
+-   소스 에셋은 자바스크립트 모듈로 불러온 파일의 문자를 어떠한 변환 없이 그대로 보여주는 역할을 한다. 이때 파일의 문자는 utf-8 형태의 문자열을 포함해야 파일 내부의 문자열을 가져올 수 있다. utf-8 형식의 문자열이 아닌 경우 문자열이 다르게 표기 될 수 있으며 문자열로 가져온 값의 일부 데이터가 소실될 수 있다. 물론 파일의 내용이 변경되는 것은 아니며 불러온 값이 파일 내용과 다르게 표시될 수 있다는 의미이다. utf-8에 대한 처리에 관한 자세한 사항은 [링크](https://github.com/webpack-contrib/raw-loader/pull/93)를 참고하자.
+-   컴퓨터는 문자를 이진수로 저장을 한다. 우리가 파일을 열 때 어떤 문자가 있는지 알 수 있는 것은 이진수의 배열을 우리가 알 수 있는 문자로 변환하였기 때문이다. 똑같은 이진수의 나열이라도 어떤 변환을 하느냐에 따라 표시되는 문자열이 달라진다. 이진수를 문자열로 변환하는 기능을 문자 디코더라고 하며 텍스트 파일을 읽을 때는 프로그램에서 적절한 문자열로 변환을 해 준다. 예를 들어 utf-8으로 디코딩되어야 하는 문자가 EUC-KR으로 디코딩되었다면 어떤 이진수에 대응하는 문자가 utf-8으로 만들어진 것인데 EUC-KR으로 해석되므로 이상한 문자 또는 글의 의미를 알수 없는 괴상한 문자의 나열이 되어 버린다. IDE에서도 인코딩 디코딩 방식을 정할 수 있는데 보통 기본적으로 utf-8을 사용한다. utf-8을 사용하는 이유는 영어, 한국어, 일본어, 중국어, 히르리어, 아랍어 등 대부분의 문자열을 해석할 수 있는 인코딩 디코딩 방식이기 때문이다.
+
+```js
+// other webpack settings...
+const svgToMiniDataURI = require('mini-svg-data-uri');
+// other webpack settings...
+const config = {
+    // other configulations...
+    module: {
+        rules: [
+            // other module options...
+            {
+                test: /\.txt/,
+                type: 'asset/source',
+            }
+        // other module options...
+        ]
+    },
+  // other configulations...
+};
+// other webpack settings...
+```
+
+-   위의 예제는 자바스크립트 모듈을 통해서 txt 확장자의 파일을 불러올 때, 소스 에셋을 적용한다는 의미를 가지고 있다. 해당 모듈로 파일을 불러올 때 반환 되는 값은 파일에 들어있는 문자열을 자바스크립트 문자열로 반환된 값이다.
+-   예를 들어 텍스트 파일에 들어 있는 문자열이 다음과 같다고 하자.
+
+```txt
+Hello world
+```
+
+-   위 파일을 모듈로 불러오는 코드 `import exampleText from './example.txt';`는 파일에 있는 문자열을 `exampleText`라는 자바스크립트 변수 안에 담는다. 이 변수를 출력해 보면 `'Hello world'`가 반환되는 것을 확인할 수 있다.
