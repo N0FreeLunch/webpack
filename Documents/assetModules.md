@@ -175,3 +175,61 @@ Hello world
 ```
 
 -   위 파일을 모듈로 불러오는 코드 `import exampleText from './example.txt';`는 파일에 있는 문자열을 `exampleText`라는 자바스크립트 변수 안에 담는다. 이 변수를 출력해 보면 `'Hello world'`가 반환되는 것을 확인할 수 있다.
+
+### URL 에셋
+
+-   https://webpack.kr/guides/asset-modules/#url-assets
+
+### 에셋 타입 (General asset type)
+
+-   webpack.config.js에서 모듈을 정의할 때 리소스(`asset/resource`), 인라인(`asset/inline`), 소스(`asset/source`) 에셋 등의 타입을 사용하지 않고, `asset`이란 타입을 사용할 때 적용되는 기능이다.
+-   이 기능은 조건을 설정하고 조건에 따라 리소스, 인라인, 소스 중 어느 에셋 중 하나를 적용하는 방식이다.
+-   기본적으로 에셋 타입은 8kb 이상의 파일을 불러올 때는 외부 파일로 분리하는 리소스 에셋을 적용하고, 8kb 미만의 파일을 불러올 때는 Base64 코드로 변환하는 인라인 에셋으로 처리한다. 이는 옵션을 부여하여 조건을 조정할 수 있다.
+
+#### 설정하기
+
+```js
+// other webpack settings...
+const config = {
+    // other configulations...
+    module: {
+        // other module options...
+        {
+            test: /\.svg/,
+            type: 'asset'
+
+        }
+        // other module options...
+    },
+    // other configulations...
+}
+// other webpack settings...
+```
+
+#### 조건 변경하기
+
+```js
+// other webpack settings...
+const config = {
+    // other configulations...
+    module: {
+        // other module options...
+        {
+            test: /\.svg/,
+            type: 'asset'
+            parser: {
+                dataUrlCondition: {
+                    maxSize: 4 * 1024 // 4kb
+                }
+            }
+        }
+        // other module options...
+    },
+    // other configulations...
+}
+// other webpack settings...
+```
+
+> 모듈 소스 크기가 maxSize보다 작으면 모듈이 Base64 인코딩 문자열로 번들에 삽입되고, 그렇지 않으면 모듈 파일이 출력 디렉터리로 내보내집니다. <sup>[link](https://webpack.kr/configuration/module/#ruleparserdataurlcondition)</sup>
+
+-   기본적으로는 8kb를 기준으로 외부 파일로 분리할지 내장할지를 정하는 조건인데 `maxSize: 4 * 1024`의 옵션을 통해서 4kb를 기준으로 4kb 이상은 리소스 에셋으로 4kb 미만은 인라인 에셋으로 처리하는 조건으로 변경하였다.
