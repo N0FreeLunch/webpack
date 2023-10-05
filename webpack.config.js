@@ -37,11 +37,13 @@ const config = {
         new HtmlWebpackPlugin({
             template: 'src_study/pages/index.html',
             chunks: ['index'],
+            hash: true,
         }),
         new HtmlWebpackPlugin({
             filename: 'subpage/index.html',
             template: 'src_study/pages/subpage.html',
             chunks: ['sub'],
+            hash: true,
         }),
         new HtmlWebpackPlugin({
             filename: '404.html',
