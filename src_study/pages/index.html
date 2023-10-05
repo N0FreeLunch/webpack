@@ -50,7 +50,17 @@
                 greenMsg: 'green index msg'
             }) 
         %>
-        <img src="assets/img/icon-square-big.svg" />
+        <div class="img-wrapper">
+            <img src="assets/img/icon-square-big.svg" />
+        </div>
+        <div class="img-wrapper">
+            <img src="<%= require('../assets/img/icon-square-big.svg') %>" />
+        </div>
+        <div class="img-wrapper">
+            <img
+                src="<%= require('../assets/img/icon-square-small-slack.png') %>"
+            />
+        </div>
         <%= require('html-loader!../fragments/footerTag.html').default %>
         <%= require('!!underscore-template-loader!../fragments/footerTag.html')() %>
     </body>
