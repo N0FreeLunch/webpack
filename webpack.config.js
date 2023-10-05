@@ -14,12 +14,14 @@ const stylesHandler = MiniCssExtractPlugin.loader;
 
 const config = {
     entry: {
-        index: [
-            "./src_study/js/index.js",
-        ],
-        sub: [
-            "./src_study/js/sub.js"
-        ],
+        index: {
+            import: "./src_study/js/index.js",
+            filename: "js/[fullhash].js"
+        },
+        sub: {
+            import: "./src_study/js/sub.js",
+            filename: "js/[chunkhash].js"
+        },
         '/404': [
             "/src_study/css/404.scss"
         ]
