@@ -1,16 +1,31 @@
-# 🚀 Welcome to your new awesome project!
+# How to create static website using webpack
 
-This project has been created using **webpack-cli**, you can now run
+## Documents
+
+-   [List](./Documents/README.md)
+
+## Run and Install
+
+### Project Installation
 
 ```
-npm run build
+npm install
 ```
 
-or
-
 ```
-yarn build
+yarn install
 ```
 
-to bundle your application
-# webpack
+### run dev-server
+
+```
+npx webpack serve
+```
+
+### build
+
+```
+yarn run build
+```
+
+-   output folder : dist
